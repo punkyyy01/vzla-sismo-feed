@@ -15,9 +15,8 @@
 
 ## 2. Strict Boundary Constraints
 - **No npm / yarn:** Never execute `npm install` or `yarn install`. All dependency operations MUST use `pnpm` (e.g. `pnpm add <pkg>`, `pnpm add -D <pkg>`, `pnpm install`).
-- **No pip:** This project has no Python service. Do not introduce Python tooling, virtualenvs, or `pip`/`uv` workflows.
 - **No Global Packages:** Do not install global pnpm modules. Use existing dependencies declared in `package.json`.
-- **No Global Agent Skills:** Do not install agent skills, extensions, or tool packages globally on the host system. Any project package, skill configuration, or custom command extension must be isolated locally within the `.pi` directory or the project workspace.
+- **Project-Scoped Agent Tooling:** Agent skills, extensions, MCP servers, and any auxiliary tool packages MUST be installed and configured at the project level (e.g. local dev dependencies, project-local config, workspace-scoped settings). Do not install or configure them globally on the host system.
 - **No Hardcoded URLs / Secrets:** External endpoints (`SUPABASE_URL`, `GROQ_API_KEY`, `CRON_SECRET`, `NEXT_PUBLIC_SITE_URL`) MUST come from environment variables. Never commit `.env.local`. The `CRON_SECRET` MUST be validated on `/api/ingest`.
 - **No Push:** Execution of `git push` is strictly prohibited.
 - **No Emojis in Output:** Never use emoji characters in script output, log messages, or commit messages unless explicitly requested by the user. Use plain text indicators instead (e.g. `[OK]`, `[FAIL]`, `[DONE]`).
@@ -26,12 +25,12 @@
 
 ## 3. Localization Rule (Mandatory)
 - **Spanish-Only Visible Content:** All user-facing copy rendered in the web app (UI strings, labels, headings, button text, error messages, placeholders, alt text, tooltips, meta `description` / `og:title` / `og:description`, toast/notification text, RSS feed titles, and any string consumed by a browser component) MUST be written in Spanish.
-- **Code comments and identifiers** may remain in English.
+- **Code-Level Text in English Allowed:** Source code comments, identifiers (variable / function / type / file names), log messages, and other code-level strings may remain in English. The Spanish-only rule applies to content rendered to or consumed by the end user, not to the source code itself.
 - **Approved exception:** Earthquake magnitude / depth numbers, timestamps in ISO-8601 (rendered via `Intl.DateTimeFormat('es-...')`), proper nouns of foreign sources (e.g. "Reuters", "AP News"), and the auto-approved USGS data block MAY keep their original technical form, but the surrounding descriptive text MUST be in Spanish.
 - **Verification:** Any PR introducing or changing a visible string must keep that string in Spanish. Lint / review agents MUST flag any English string found in a `.tsx`, `.jsx`, or i18n / locale file under `src/app` or `src/components`.
 
 ## 4. Automation & Verification
-- **Standard startup path:** `./init.sh` (to be implemented) must install deps with `pnpm`, run typecheck (`pnpm tsc --noEmit`) and build (`pnpm build`).
+- **Standard startup path:** `./init.sh` must install deps with `pnpm`, run typecheck (`pnpm tsc --noEmit`) and build (`pnpm build`).
 - **Standard verification path:** `pnpm install --frozen-lockfile` then `pnpm tsc --noEmit` then `pnpm build`. The build MUST succeed with zero TypeScript errors before a feature is marked complete.
 - **PWA sanity check:** After build, `public/sw.js` (or workbox output) must exist and `public/manifest.webmanifest` must reference Spanish `name` and `short_name`.
 
