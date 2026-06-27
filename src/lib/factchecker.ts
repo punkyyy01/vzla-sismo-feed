@@ -58,8 +58,12 @@ export async function verificarNoticia(
   fuente: string
 ): Promise<FactCheckResult> {
   try {
+    const abort = new AbortController()
+    const timer = setTimeout(() => abort.abort(), 15000)
+
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
+      signal: abort.signal,
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': process.env.ANTHROPIC_API_KEY!,
@@ -79,6 +83,8 @@ DESCRIPCIÓN: ${descripcion?.slice(0, 500) ?? '(sin descripción)'}`,
         ],
       }),
     })
+
+    clearTimeout(timer)
 
     if (!res.ok) throw new Error(`Claude API error: ${res.status}`)
 
