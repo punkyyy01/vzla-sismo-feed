@@ -1,48 +1,108 @@
 # Venezuela Sismo — Feed de noticias verificadas
 
-![Estado: Activo](https://img.shields.io/badge/Estado-Activo-success?style=flat-square)
-![Next.js](https://img.shields.io/badge/Next.js-14-black?style=flat-square&logo=next.js)
-![Supabase](https://img.shields.io/badge/Supabase-Database-3ECF8E?style=flat-square&logo=supabase)
-
-Feed en tiempo real de noticias verificadas sobre sismos en Venezuela.
-Stack: **Next.js 14 · Supabase · Tailwind CSS · Claude API (fact-checking)**
+Feed en tiempo real de noticias verificadas sobre el doblete sísmico del 24 de junio de 2026 en Venezuela.  
+Stack: **Next.js 14 · Supabase · Tailwind · Claude API (fact-checking)**
 
 ---
 
-## ⚙️ Cómo funciona
+## El evento
 
-| Etapa | Descripción |
-| :--- | :--- |
-| **1. Ingesta** | Monitoreo de fuentes en tiempo real (RSS / USGS / Nitter). |
-| **2. Filtrado** | Aplicación de palabras clave para determinar relevancia inmediata. |
-| **3. Fact-Checking** | Análisis mediante Claude/Groq para asignar estado de veracidad y etiquetas. |
-
----
-
-## ✨ Características Principales
-
-* **Realtime:** Actualizaciones instantáneas en el cliente mediante Supabase Realtime.
-* **Robustez de Ingesta:** Sistema de prevención de duplicados mediante `.maybeSingle()`.
-* **Validación Estricta:** Filtrado en el feed basado en `factcheck_status !== 'aprobado'` para evitar falsos positivos.
+Dos sismos ocurrieron con apenas 40 segundos de diferencia:
+- **M7.2** y **M7.5** con epicentro cerca de Morón / San Felipe (Yaracuy/Carabobo)
+- Zonas más afectadas: La Guaira, Caracas, Carabobo, Miranda, Trujillo
+- ~920 muertos · ~3,360 heridos · +50,000 desaparecidos
+- Estado de emergencia declarado por el gobierno venezolano
 
 ---
 
-## 🚀 Configuración Local
+## Cómo funciona
 
-Sigue estos pasos para correr el proyecto en tu máquina:
+```
+RSS / USGS GeoJSON / Nitter
+           │
+           ▼
+  [Pre-filtro keywords]   ← gratis, instantáneo
+           │ pasa
+           ▼
+  [Claude fact-checker]   ← verifica relevancia + asigna tag + score 0-100
+           │ aprobado
+           ▼
+  [Supabase (noticias)]   ← RLS: solo aprobadas son públicas
+           │
+           ▼
+  [Supabase Realtime]     ← WebSocket push al cliente
+           │
+           ▼
+  [Feed en el browser]    ← se actualiza solo
+```
+
+Cada noticia pasa por dos filtros:
+1. **Pre-filtro de keywords** — descarta lo obvio gratis (sin gastar tokens)
+2. **Claude API (claude-sonnet-4-6)** — verifica relevancia al sismo de Venezuela, asigna tag y da score de confianza 0-100
+
+Cada noticia tiene tres estados posibles: `aprobado`, `rechazado`, o `dudoso`. Solo las `aprobado` aparecen en el feed público (RLS de Supabase lo garantiza). Las rechazadas y dudosas se guardan igual para auditoría.
+
+USGS se maneja aparte: consume GeoJSON en lugar de RSS y sus entradas son auto-aprobadas (fuente oficial, confianza 99).
+
+El cron corre en Vercel cada 5 minutos. La respuesta del endpoint `/api/ingest` incluye:
+```json
+{ "ok": true, "procesadas": N, "aprobadas": N, "rechazadas": N, "duplicadas": N, "timestamp": "..." }
+```
+
+---
+
+## Deploy en Vercel
 
 ```bash
-# 1. Clonar el repositorio
-git clone [https://github.com/renasarenas/vzla-sismo-feed.git](https://github.com/renasarenas/vzla-sismo-feed.git)
+npm i -g vercel
+vercel --prod
+```
 
-# 2. Entrar a la carpeta
-cd vzla-sismo-feed
+Agregar en Vercel → Settings → Environment Variables:
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `ANTHROPIC_API_KEY`
+- `CRON_SECRET`
 
-# 3. Instalar dependencias
-npm install
+El `vercel.json` ya configura el cron para correr `/api/ingest` cada 5 minutos.
 
-# 4. Configurar variables de entorno (Añade tus credenciales reales aquí)
-cp .env.example .env.local
+---
 
-# 5. Ejecutar el servidor de desarrollo
-npm run dev
+## Tags del feed
+
+| Tag | Qué cubre |
+|-----|-----------|
+| `sismo` | Datos técnicos, magnitud, epicentro |
+| `rescate` | Equipos de búsqueda y rescate, supervivientes |
+| `desaparecidos` | Personas buscadas, plataformas de localización |
+| `puntos_acopio` | Centros de donación en especie |
+| `ayuda_humanitaria` | ONG, refugios, distribución de ayuda |
+| `replicas` | Aftershocks, sismos posteriores |
+| `donaciones` | Cómo donar dinero, canales de donación |
+| `internacional` | Respuesta de otros países, diplomacia |
+
+---
+
+## Fuentes
+
+**Alta confiabilidad (procesadas con mayor tolerancia):**
+- Reuters América Latina
+- AP News
+- BBC Mundo
+- CNN en Español
+- Univisión Noticias
+- El Tiempo (Colombia)
+- USGS (datos sísmicos oficiales — auto-aprobadas, sin fact-check)
+
+**Confiabilidad media (mayor scrutiny de Claude):**
+- X #TerremotoVenezuela (via Nitter RSS)
+- X #SismoVenezuela (via Nitter RSS)
+
+---
+
+## Costos estimados (Claude API)
+
+~9 fuentes × hasta 20 items × cada 5 min = ~2,000 llamadas/hora máximo.  
+El pre-filtro de keywords elimina ~70-80% antes de llegar a Claude.  
+Costo estimado: **< $2 USD/día** con `claude-sonnet-4-6` a precios actuales.
