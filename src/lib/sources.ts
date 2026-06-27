@@ -47,6 +47,12 @@ export const FUENTES: Source[] = [
     url: 'https://www.eltiempo.com/rss/mundo.xml',
     confiabilidad: 'alta',
   },
+  {
+    nombre: 'La Patilla',
+    tipo: 'rss',
+    url: 'https://lapatilla.com/feed/',
+    confiabilidad: 'media',
+  },
   // USGS - Datos sísmicos oficiales
   {
     nombre: 'USGS Sismos',
@@ -54,7 +60,63 @@ export const FUENTES: Source[] = [
     url: 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_week.geojson',
     confiabilidad: 'alta',
   },
-  // Nitter (X/Twitter sin API de pago) — confiabilidad media, necesita más fact-check
+  // Cuentas Oficiales de X (Nitter RSS)
+  {
+    nombre: '@Funvisis',
+    tipo: 'x_twitter',
+    url: 'https://nitter.net/funvisis/rss',
+    confiabilidad: 'alta',
+  },
+  {
+    nombre: '@PCivil_Ve',
+    tipo: 'x_twitter',
+    url: 'https://nitter.net/PCivil_Ve/rss',
+    confiabilidad: 'alta',
+  },
+  {
+    nombre: '@CruzRojaVe',
+    tipo: 'x_twitter',
+    url: 'https://nitter.net/cruzrojave/rss',
+    confiabilidad: 'alta',
+  },
+  // Perfiles de Noticias, Periodistas y Política
+  {
+    nombre: '@UHN_Plus',
+    tipo: 'x_twitter',
+    url: 'https://nitter.net/UHN_Plus/rss',
+    confiabilidad: 'media',
+  },
+  {
+    nombre: '@OrlvndoA',
+    tipo: 'x_twitter',
+    url: 'https://nitter.net/OrlvndoA/rss',
+    confiabilidad: 'media',
+  },
+  {
+    nombre: '@MariaCorinaYA',
+    tipo: 'x_twitter',
+    url: 'https://nitter.net/MariaCorinaYA/rss',
+    confiabilidad: 'alta',
+  },
+  {
+    nombre: '@nayibbukele',
+    tipo: 'x_twitter',
+    url: 'https://nitter.net/nayibbukele/rss',
+    confiabilidad: 'alta',
+  },
+  {
+    nombre: '@usembassyve',
+    tipo: 'x_twitter',
+    url: 'https://nitter.net/usembassyve/rss',
+    confiabilidad: 'alta',
+  },
+  {
+    nombre: '@EmmaRincon',
+    tipo: 'x_twitter',
+    url: 'https://nitter.net/EmmaRincon/rss',
+    confiabilidad: 'media',
+  },
+  // Nitter (X/Twitter búsqueda) — confiabilidad media
   {
     nombre: 'X #TerremotoVenezuela',
     tipo: 'x_twitter',
