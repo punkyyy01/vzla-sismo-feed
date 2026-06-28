@@ -10,15 +10,19 @@
   }
 
   body {
-    @apply bg-white text-gray-900;
+    @apply bg-surface text-gray-900;
+  }
+
+  .dark body {
+    @apply bg-surface-dark text-gray-100;
   }
 
   :focus-visible {
-    @apply outline-none ring-2 ring-crisis-blue ring-offset-2 ring-offset-white;
+    @apply outline-none ring-2 ring-crisis-blue ring-offset-2 ring-offset-surface;
   }
 
   .dark :focus-visible {
-    @apply ring-offset-gray-950;
+    @apply ring-offset-surface-dark;
   }
 }
 

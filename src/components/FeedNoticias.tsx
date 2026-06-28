@@ -19,8 +19,8 @@ type Noticia = {
 }
 
 const TAG_META: Record<string, { label: string; border: string; pill: string; short: string }> = {
-  todos:             { label: 'Todos',             border: 'border-l-gray-300',   pill: '',                                                             short: 'Todos' },
-  sismo:             { label: 'Sismo',             border: 'border-l-red-500',    pill: 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-200',    short: 'Sismo' },
+  todos:             { label: 'Todas las categorías', border: 'border-l-gray-300',   pill: '',                                                             short: 'Todas' },
+  sismo:             { label: 'Sismo',             border: 'border-l-crisis-red',    pill: 'bg-crisis-red/10 text-crisis-red-dark dark:bg-crisis-red/20 dark:text-crisis-red-light',    short: 'Sismo' },
   rescate:           { label: 'Rescate',           border: 'border-l-orange-500', pill: 'bg-orange-100 text-orange-800 dark:bg-orange-900/40 dark:text-orange-200', short: 'Rescate' },
   desaparecidos:     { label: 'Desaparecidos',     border: 'border-l-purple-500', pill: 'bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-200', short: 'Desap.' },
   puntos_acopio:     { label: 'Puntos de acopio',  border: 'border-l-green-500',  pill: 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-200', short: 'Acopio' },
@@ -59,15 +59,32 @@ function SearchIcon() {
   )
 }
 
+function AlertIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+      <path d="M12 9v4" />
+      <path d="M12 17h.01" />
+    </svg>
+  )
+}
+
+function NewspaperIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2" />
+      <path d="M18 14h-8" />
+      <path d="M15 18h-5" />
+      <path d="M10 6h8v4h-8V6Z" />
+    </svg>
+  )
+}
+
 function AlertBanner() {
   return (
-    <div className="bg-crisis-red text-white px-4 py-2.5">
-      <div className="max-w-2xl mx-auto flex items-center gap-2">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
-          <path d="M12 9v4" />
-          <path d="M12 17h.01" />
-        </svg>
+    <div className="bg-crisis-red text-white">
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-10 py-2.5 flex items-center gap-2">
+        <AlertIcon />
         <p className="text-xs sm:text-sm font-medium">
           Información verificada en tiempo real — Sismo Venezuela 24 jun
         </p>
@@ -77,42 +94,20 @@ function AlertBanner() {
 }
 
 function EmptyState({ error, degraded }: { error?: boolean; degraded?: boolean }) {
-  if (degraded) {
-    return (
-      <div className="text-center py-16 px-4">
-        <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 mb-4">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2" />
-            <path d="M18 14h-8" />
-            <path d="M15 18h-5" />
-            <path d="M10 6h8v4h-8V6Z" />
-          </svg>
-        </div>
-        <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-1">Servicio de noticias no configurado</h3>
-        <p className="text-sm text-gray-500 dark:text-gray-400 max-w-xs mx-auto">
-          El feed está en modo local. Conecta Supabase para ver noticias verificadas en tiempo real.
-        </p>
-      </div>
-    )
-  }
-
   return (
-    <div className="text-center py-16 px-4">
+    <div className="text-center py-16 px-6 bg-surface-elevated dark:bg-surface-elevated-dark rounded-xl border border-gray-200 dark:border-gray-800">
       <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 mb-4">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2" />
-          <path d="M18 14h-8" />
-          <path d="M15 18h-5" />
-          <path d="M10 6h8v4h-8V6Z" />
-        </svg>
+        <NewspaperIcon />
       </div>
       <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-1">
-        {error ? 'No se pudo cargar el feed' : 'Sin noticias verificadas'}
+        {degraded ? 'Servicio de noticias no configurado' : error ? 'No se pudo cargar el feed' : 'Sin noticias verificadas'}
       </h3>
       <p className="text-sm text-gray-500 dark:text-gray-400 max-w-xs mx-auto">
-        {error
-          ? 'El servicio de noticias no está disponible. Revisa tu conexión o intenta más tarde.'
-          : 'Aún no hay noticias en esta categoría.'}
+        {degraded
+          ? 'El feed está en modo local. Conecta Supabase para ver noticias verificadas en tiempo real.'
+          : error
+            ? 'El servicio de noticias no está disponible. Revisa tu conexión o intenta más tarde.'
+            : 'Aún no hay noticias en esta categoría.'}
       </p>
     </div>
   )
@@ -261,261 +256,307 @@ export function FeedNoticias({ initialData }: { initialData?: Noticia[] }) {
 
   const isNuevo = (n: Noticia) => n.isNew && n.insertedAt && Date.now() - n.insertedAt < 300_000
 
+  const tagList = Object.entries(TAG_META)
+
   return (
     <>
       <AlertBanner />
-      <main className="max-w-2xl mx-auto px-4 py-6">
-        {/* Header */}
-        <header className="mb-5">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-crisis-red opacity-75" />
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-crisis-red" />
-            </span>
-            <h1 className="text-display text-gray-900 dark:text-white">
-              Venezuela — Sismo 24 jun
-            </h1>
-          </div>
-          {statsLabel ? (
-            <p className="text-small text-gray-500 dark:text-gray-400 ml-4.5">{statsLabel}</p>
-          ) : (
-            <p className="text-small text-gray-500 dark:text-gray-400 ml-4.5">Feed de noticias verificadas</p>
-          )}
-        </header>
 
-        {/* Buscador */}
-        <div className="relative mb-4">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-            <SearchIcon />
-          </span>
-          <input
-            type="text"
-            value={queryInput}
-            onChange={e => setQueryInput(e.target.value)}
-            placeholder="Buscar noticias..."
-            className="w-full pl-9 pr-4 py-2.5 text-small rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:border-crisis-blue focus:ring-1 focus:ring-crisis-blue transition-colors"
-          />
-        </div>
-
-        {/* Query result label */}
-        {query && total !== null && (
-          <p className="text-caption text-gray-500 dark:text-gray-400 mb-3">
-            {total} resultado{total !== 1 ? 's' : ''} para &ldquo;{query}&rdquo;
-          </p>
-        )}
-
-        {/* Filtro de idioma */}
-        <div className="flex gap-1.5 mb-3">
-          {(['todos', 'es', 'en'] as const).map(lang => (
-            <button
-              key={lang}
-              onClick={() => setIdiomaActivo(lang)}
-              className={`text-caption px-3 py-1.5 rounded-full border transition-colors ${
-                idiomaActivo === lang
-                  ? 'bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 border-gray-900 dark:border-gray-100 font-medium'
-                  : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:border-gray-400'
-              }`}
-            >
-              {lang === 'todos' ? 'Todos' : lang === 'es' ? 'Español' : 'English'}
-            </button>
-          ))}
-        </div>
-
-        {/* Tab switcher */}
-        <div className="flex bg-gray-100 dark:bg-gray-800 rounded-lg p-1 mb-4">
-          <button
-            onClick={() => setView('feed')}
-            className={`flex-1 py-1.5 text-small font-medium rounded-md transition-all ${
-              view === 'feed'
-                ? 'bg-white dark:bg-gray-700 shadow-sm text-gray-900 dark:text-white'
-                : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
-            }`}
-          >
-            Feed General
-          </button>
-          <button
-            onClick={() => setView('medios')}
-            className={`flex-1 py-1.5 text-small font-medium rounded-md transition-all ${
-              view === 'medios'
-                ? 'bg-white dark:bg-gray-700 shadow-sm text-gray-900 dark:text-white'
-                : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
-            }`}
-          >
-            Medios Oficiales
-          </button>
-        </div>
-
-        {view === 'feed' ? (
-          <>
-            {/* Banner de nuevas noticias */}
-            {nuevasCount > 0 && (
-              <button
-                onClick={() => { setNuevasCount(0); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
-                className="w-full mb-4 py-2.5 text-small font-semibold text-white bg-crisis-red rounded-lg hover:bg-crisis-red-dark transition-colors"
-              >
-                {nuevasCount} nueva{nuevasCount > 1 ? 's' : ''} noticia{nuevasCount > 1 ? 's' : ''} — ver arriba
-              </button>
-            )}
-
-            {/* Tags */}
-            <div className="flex gap-2 overflow-x-auto pb-2 mb-5 scrollbar-hide">
-              {Object.entries(TAG_META).map(([key, { label, pill, short }]) => (
-                <button
-                  key={key}
-                  onClick={() => setTagActivo(key)}
-                  className={`
-                    whitespace-nowrap text-caption px-3 py-1.5 rounded-full border transition-colors
-                    ${tagActivo === key
-                      ? `bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 border-gray-900 dark:border-gray-100 font-medium`
-                      : pill
-                        ? `${pill} border-transparent hover:opacity-80`
-                        : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:border-gray-400'}
-                  `}
-                >
-                  {short}
-                </button>
-              ))}
-            </div>
-
-            {/* Error */}
-            {error && <EmptyState error />}
-
-            {/* Feed */}
-            {cargando ? (
-              <div className="space-y-3">
-                {[...Array(5)].map((_, i) => (
-                  <div key={i} className="h-28 bg-gray-100 dark:bg-gray-800 rounded-xl animate-pulse" />
-                ))}
+      {/* Hero */}
+      <section className="border-b border-gray-200 dark:border-gray-800 bg-surface-elevated dark:bg-surface-elevated-dark">
+        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-10 py-8 lg:py-12">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+            <div className="max-w-2xl">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-crisis-red/10 text-crisis-red dark:bg-crisis-red/20 dark:text-crisis-red-light text-caption font-semibold mb-4">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-crisis-red opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-crisis-red" />
+                </span>
+                En vivo
               </div>
-            ) : noticias.length === 0 && !error ? (
-              <EmptyState degraded={degraded} />
-            ) : (
-              <>
-                <div className="space-y-3">
-                  {noticias.map(n => {
-                    const meta = TAG_META[n.tag]
-                    return (
-                      <a
-                        key={n.id}
-                        href={n.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`
-                          block p-4 rounded-xl border border-gray-100 dark:border-gray-700
-                          bg-white dark:bg-gray-800
-                          border-l-[3px] ${meta?.border ?? 'border-l-gray-300'}
-                          hover:border-gray-300 dark:hover:border-gray-500 hover:shadow-sm transition-all
-                          ${isNuevo(n) ? 'ring-1 ring-crisis-red/30' : ''}
-                        `}
-                      >
-                        <div className="flex items-center gap-2 mb-2 flex-wrap">
-                          <span className="text-caption font-medium text-gray-500 dark:text-gray-400">
-                            {fuenteLabel(n.fuente_tipo, n.fuente)}
-                          </span>
-                          {n.idioma === 'en' && (
-                            <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400">
-                              EN
-                            </span>
-                          )}
-                          {meta && meta.pill && (
-                            <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${meta.pill}`}>
-                              {meta.label}
-                            </span>
-                          )}
-                          {isNuevo(n) && (
-                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-crisis-red text-white">
-                              NUEVO
-                            </span>
-                          )}
-                          <span className="text-caption text-gray-400 dark:text-gray-500 ml-auto">
-                            {tiempoRelativo(n.publicado_at)}
-                          </span>
-                        </div>
-                        <p className="text-base font-semibold text-gray-900 dark:text-gray-100 leading-snug mb-1">
-                          {n.titulo}
-                        </p>
-                        {n.descripcion && (
-                          <p className="text-caption text-gray-500 dark:text-gray-400 line-clamp-2">
-                            {n.descripcion}
-                          </p>
-                        )}
-                        <div className="mt-3 flex items-center gap-2">
-                          <div className="flex-1 h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
-                            <div
-                              className="h-full bg-green-500 rounded-full"
-                              style={{ width: `${n.factcheck_confianza}%` }}
-                            />
-                          </div>
-                          <span className="text-[10px] text-gray-400 dark:text-gray-500">
-                            {n.factcheck_confianza}% verificado
-                          </span>
-                        </div>
-                      </a>
-                    )
-                  })}
-                </div>
-                {/* Sentinel + spinner */}
-                <div ref={sentinelRef} className="py-4 text-center">
-                  {cargandoMas && (
-                    <div className="inline-block w-5 h-5 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
-                  )}
-                  {!hasMore && noticias.length > 0 && (
-                    <p className="text-caption text-gray-400 dark:text-gray-500">No hay más noticias</p>
-                  )}
-                </div>
-              </>
-            )}
-          </>
-        ) : (
-          <div className="space-y-4">
-            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-4 rounded-xl mb-4">
-              <h3 className="text-small font-bold text-blue-900 dark:text-blue-100 mb-1">Timeline de Medios Oficiales</h3>
-              <p className="text-caption text-blue-700 dark:text-blue-300">Actualizaciones de cuentas verificadas como @Funvisis, @PCivil_Ve y @CruzRojaVe.</p>
+              <h1 className="text-hero text-gray-900 dark:text-white mb-3">
+                Venezuela — Sismo 24 jun
+              </h1>
+              <p className="text-lead text-gray-600 dark:text-gray-300">
+                Feed de noticias verificadas sobre el terremoto del 24 de junio de 2026. Información oficial, reportes de emergencia y recursos para afectados.
+              </p>
             </div>
-            <div className="relative border-l border-gray-200 dark:border-gray-700 ml-3 space-y-6 pb-4">
-              {noticias
-                .filter(n => n.fuente.startsWith('@'))
-                .map((n) => {
-                  let colorClass = 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-200'
-                  if (n.fuente.includes('PCivil_Ve') || n.fuente.includes('bomberos')) {
-                    colorClass = 'bg-orange-100 dark:bg-orange-900/40 text-orange-700 dark:text-orange-200'
-                  } else if (n.fuente.includes('CruzRoja')) {
-                    colorClass = 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-200'
-                  }
-                  return (
-                    <div key={`timeline-${n.id}`} className="relative pl-6">
-                      <span className={`absolute -left-[7px] top-1.5 w-3.5 h-3.5 rounded-full border-2 border-white dark:border-gray-900 ${colorClass.replace('text-', 'bg-').split(' ')[0]}`} />
-                      <a href={n.url} target="_blank" rel="noopener noreferrer" className="block bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 p-3 rounded-lg shadow-sm hover:border-blue-300 dark:hover:border-blue-700 transition-colors">
-                        <div className="flex justify-between items-center mb-1">
-                          <span className="text-caption font-bold text-gray-900 dark:text-white">{n.fuente}</span>
-                          <span className="text-caption text-gray-400 dark:text-gray-500">{tiempoRelativo(n.publicado_at)}</span>
-                        </div>
-                        <p className="text-small text-gray-800 dark:text-gray-200">{n.titulo}</p>
-                        {n.descripcion && (
-                          <p className="text-caption text-gray-500 dark:text-gray-400 mt-1 line-clamp-3">{n.descripcion}</p>
-                        )}
-                        <div className="mt-2 text-[10px] text-blue-700 dark:text-blue-300 font-semibold bg-blue-50 dark:bg-blue-900/30 inline-block px-2 py-0.5 rounded">
-                          Verificado por cuenta oficial ({n.factcheck_confianza}%)
-                        </div>
-                      </a>
-                    </div>
-                  )
-                })}
-              {noticias.filter(n => n.fuente.startsWith('@')).length === 0 && !cargando && (
-                <div className="pl-6 text-small text-gray-400 dark:text-gray-500 italic py-4">
-                  No hay actualizaciones recientes de las cuentas oficiales.
-                </div>
-              )}
-              {cargando && (
-                <div className="pl-6 space-y-3 py-4">
-                  <div className="h-20 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse" />
-                  <div className="h-20 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse" />
-                </div>
-              )}
+            <div className="flex items-center gap-4 lg:pb-1">
+              <div className="text-right">
+                <p className="text-3xl font-bold text-gray-900 dark:text-white">{total ?? '—'}</p>
+                <p className="text-caption text-gray-500 dark:text-gray-400">noticias verificadas</p>
+              </div>
+              <div className="h-10 w-px bg-gray-200 dark:bg-gray-700" />
+              <div className="text-right">
+                <p className="text-3xl font-bold text-crisis-red">24</p>
+                <p className="text-caption text-gray-500 dark:text-gray-400">jun 2026</p>
+              </div>
             </div>
           </div>
-        )}
-      </main>
+        </div>
+      </section>
+
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-10 py-8 lg:py-10">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-10">
+          {/* Sidebar */}
+          <aside className="lg:w-72 xl:w-80 shrink-0">
+            <div className="lg:sticky lg:top-24 space-y-6">
+              {/* Buscador */}
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                  <SearchIcon />
+                </span>
+                <input
+                  type="text"
+                  value={queryInput}
+                  onChange={e => setQueryInput(e.target.value)}
+                  placeholder="Buscar noticias..."
+                  className="w-full pl-9 pr-4 py-2.5 text-small rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:border-crisis-blue focus:ring-1 focus:ring-crisis-blue transition-colors"
+                />
+              </div>
+
+              {/* Idioma */}
+              <div>
+                <h3 className="text-caption font-semibold uppercase text-gray-400 dark:text-gray-500 tracking-wider mb-3">Idioma</h3>
+                <div className="flex flex-wrap gap-2">
+                  {(['todos', 'es', 'en'] as const).map(lang => (
+                    <button
+                      key={lang}
+                      onClick={() => setIdiomaActivo(lang)}
+                      className={`text-caption px-3 py-1.5 rounded-full border transition-colors ${
+                        idiomaActivo === lang
+                          ? 'bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 border-gray-900 dark:border-gray-100 font-medium'
+                          : 'bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:border-gray-400'
+                      }`}
+                    >
+                      {lang === 'todos' ? 'Todos' : lang === 'es' ? 'Español' : 'English'}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Tags */}
+              <div>
+                <h3 className="text-caption font-semibold uppercase text-gray-400 dark:text-gray-500 tracking-wider mb-3">Categorías</h3>
+                <div className="flex flex-col gap-1">
+                  {tagList.map(([key, { label, pill, short }]) => (
+                    <button
+                      key={key}
+                      onClick={() => setTagActivo(key)}
+                      className={`
+                        flex items-center justify-between text-left px-3 py-2 rounded-lg text-small transition-colors
+                        ${tagActivo === key
+                          ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white font-medium'
+                          : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/60'}
+                      `}
+                    >
+                      <span>{label}</span>
+                      {pill && key !== 'todos' && (
+                        <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${pill}`}>
+                          {short}
+                        </span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Estado */}
+              <div className="p-4 rounded-xl bg-crisis-red/5 dark:bg-crisis-red/10 border border-crisis-red/10 dark:border-crisis-red/20">
+                <h3 className="text-small font-semibold text-crisis-red-dark dark:text-crisis-red-light mb-1">Estado del servicio</h3>
+                <p className="text-caption text-gray-600 dark:text-gray-300">
+                  {statsLabel || 'Conectando con fuentes oficiales...'}
+                </p>
+              </div>
+            </div>
+          </aside>
+
+          {/* Main feed */}
+          <main className="flex-1 min-w-0">
+            {/* Tabs + query label */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
+              <div className="flex bg-gray-100 dark:bg-gray-800 rounded-lg p-1 w-full sm:w-auto">
+                <button
+                  onClick={() => setView('feed')}
+                  className={`flex-1 sm:flex-initial px-5 py-1.5 text-small font-medium rounded-md transition-all ${
+                    view === 'feed'
+                      ? 'bg-white dark:bg-gray-700 shadow-sm text-gray-900 dark:text-white'
+                      : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
+                  }`}
+                >
+                  Feed General
+                </button>
+                <button
+                  onClick={() => setView('medios')}
+                  className={`flex-1 sm:flex-initial px-5 py-1.5 text-small font-medium rounded-md transition-all ${
+                    view === 'medios'
+                      ? 'bg-white dark:bg-gray-700 shadow-sm text-gray-900 dark:text-white'
+                      : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
+                  }`}
+                >
+                  Medios Oficiales
+                </button>
+              </div>
+              {query && total !== null && (
+                <p className="text-caption text-gray-500 dark:text-gray-400">
+                  {total} resultado{total !== 1 ? 's' : ''} para &ldquo;{query}&rdquo;
+                </p>
+              )}
+            </div>
+
+            {view === 'feed' ? (
+              <>
+                {/* Banner de nuevas noticias */}
+                {nuevasCount > 0 && (
+                  <button
+                    onClick={() => { setNuevasCount(0); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
+                    className="w-full mb-5 py-2.5 text-small font-semibold text-white bg-crisis-red rounded-lg hover:bg-crisis-red-dark transition-colors"
+                  >
+                    {nuevasCount} nueva{nuevasCount > 1 ? 's' : ''} noticia{nuevasCount > 1 ? 's' : ''} — ver arriba
+                  </button>
+                )}
+
+                {/* Error */}
+                {error && <EmptyState error />}
+
+                {/* Feed */}
+                {cargando ? (
+                  <div className="space-y-4">
+                    {[...Array(5)].map((_, i) => (
+                      <div key={i} className="h-32 bg-white dark:bg-gray-900 rounded-xl animate-pulse border border-gray-100 dark:border-gray-800" />
+                    ))}
+                  </div>
+                ) : noticias.length === 0 && !error ? (
+                  <EmptyState degraded={degraded} />
+                ) : (
+                  <>
+                    <div className="space-y-4">
+                      {noticias.map(n => {
+                        const meta = TAG_META[n.tag]
+                        return (
+                          <a
+                            key={n.id}
+                            href={n.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`
+                              group block p-5 rounded-xl border bg-white dark:bg-gray-900
+                              border-gray-200 dark:border-gray-800
+                              border-l-[3px] ${meta?.border ?? 'border-l-gray-300'}
+                              hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-soft transition-all
+                              ${isNuevo(n) ? 'ring-1 ring-crisis-red/30' : ''}
+                            `}
+                          >
+                            <div className="flex items-center gap-2 mb-2 flex-wrap">
+                              <span className="text-caption font-medium text-gray-500 dark:text-gray-400">
+                                {fuenteLabel(n.fuente_tipo, n.fuente)}
+                              </span>
+                              {n.idioma === 'en' && (
+                                <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400">
+                                  EN
+                                </span>
+                              )}
+                              {meta && meta.pill && (
+                                <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${meta.pill}`}>
+                                  {meta.label}
+                                </span>
+                              )}
+                              {isNuevo(n) && (
+                                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-crisis-red text-white">
+                                  NUEVO
+                                </span>
+                              )}
+                              <span className="text-caption text-gray-400 dark:text-gray-500 ml-auto">
+                                {tiempoRelativo(n.publicado_at)}
+                              </span>
+                            </div>
+                            <p className="text-headline text-gray-900 dark:text-gray-100 leading-snug mb-2 group-hover:text-crisis-blue transition-colors">
+                              {n.titulo}
+                            </p>
+                            {n.descripcion && (
+                              <p className="text-small text-gray-600 dark:text-gray-400 line-clamp-2 mb-4">
+                                {n.descripcion}
+                              </p>
+                            )}
+                            <div className="flex items-center gap-3">
+                              <div className="flex-1 h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                                <div
+                                  className="h-full bg-green-500 rounded-full"
+                                  style={{ width: `${n.factcheck_confianza}%` }}
+                                />
+                              </div>
+                              <span className="text-[10px] text-gray-400 dark:text-gray-500 shrink-0">
+                                {n.factcheck_confianza}% verificado
+                              </span>
+                            </div>
+                          </a>
+                        )
+                      })}
+                    </div>
+                    {/* Sentinel + spinner */}
+                    <div ref={sentinelRef} className="py-6 text-center">
+                      {cargandoMas && (
+                        <div className="inline-block w-5 h-5 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
+                      )}
+                      {!hasMore && noticias.length > 0 && (
+                        <p className="text-caption text-gray-400 dark:text-gray-500">No hay más noticias</p>
+                      )}
+                    </div>
+                  </>
+                )}
+              </>
+            ) : (
+              <div className="space-y-4">
+                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-4 rounded-xl mb-4">
+                  <h3 className="text-small font-bold text-blue-900 dark:text-blue-100 mb-1">Timeline de Medios Oficiales</h3>
+                  <p className="text-caption text-blue-700 dark:text-blue-300">Actualizaciones de cuentas verificadas como @Funvisis, @PCivil_Ve y @CruzRojaVe.</p>
+                </div>
+                <div className="relative border-l border-gray-200 dark:border-gray-700 ml-3 space-y-6 pb-4">
+                  {noticias
+                    .filter(n => n.fuente.startsWith('@'))
+                    .map((n) => {
+                      let colorClass = 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-200'
+                      if (n.fuente.includes('PCivil_Ve') || n.fuente.includes('bomberos')) {
+                        colorClass = 'bg-orange-100 dark:bg-orange-900/40 text-orange-700 dark:text-orange-200'
+                      } else if (n.fuente.includes('CruzRoja')) {
+                        colorClass = 'bg-crisis-red/10 dark:bg-crisis-red/30 text-crisis-red-dark dark:text-crisis-red-light'
+                      }
+                      return (
+                        <div key={`timeline-${n.id}`} className="relative pl-6">
+                          <span className={`absolute -left-[7px] top-1.5 w-3.5 h-3.5 rounded-full border-2 border-white dark:border-gray-900 ${colorClass.replace('text-', 'bg-').split(' ')[0]}`} />
+                          <a href={n.url} target="_blank" rel="noopener noreferrer" className="block bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-4 rounded-lg shadow-soft hover:border-blue-300 dark:hover:border-blue-700 transition-colors">
+                            <div className="flex justify-between items-center mb-1">
+                              <span className="text-caption font-bold text-gray-900 dark:text-white">{n.fuente}</span>
+                              <span className="text-caption text-gray-400 dark:text-gray-500">{tiempoRelativo(n.publicado_at)}</span>
+                            </div>
+                            <p className="text-small text-gray-800 dark:text-gray-200">{n.titulo}</p>
+                            {n.descripcion && (
+                              <p className="text-caption text-gray-500 dark:text-gray-400 mt-1 line-clamp-3">{n.descripcion}</p>
+                            )}
+                            <div className="mt-2 text-[10px] text-crisis-blue dark:text-crisis-blue-light font-semibold bg-blue-50 dark:bg-blue-900/30 inline-block px-2 py-0.5 rounded">
+                              Verificado por cuenta oficial ({n.factcheck_confianza}%)
+                            </div>
+                          </a>
+                        </div>
+                      )
+                    })}
+                  {noticias.filter(n => n.fuente.startsWith('@')).length === 0 && !cargando && (
+                    <div className="pl-6 text-small text-gray-400 dark:text-gray-500 italic py-4">
+                      No hay actualizaciones recientes de las cuentas oficiales.
+                    </div>
+                  )}
+                  {cargando && (
+                    <div className="pl-6 space-y-3 py-4">
+                      <div className="h-20 bg-white dark:bg-gray-900 rounded-lg animate-pulse border border-gray-100 dark:border-gray-800" />
+                      <div className="h-20 bg-white dark:bg-gray-900 rounded-lg animate-pulse border border-gray-100 dark:border-gray-800" />
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </main>
+        </div>
+      </div>
     </>
   )
 }

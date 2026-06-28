@@ -53,16 +53,16 @@ export function MapaSismos() {
   }, [supabase])
 
   return (
-    <main className="max-w-2xl mx-auto px-4 py-6">
-      <header className="mb-4">
-        <h1 className="text-title text-gray-900 dark:text-white">
+    <main className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-10 py-8 lg:py-10">
+      <header className="mb-6">
+        <h1 className="text-display text-gray-900 dark:text-white">
           Mapa de sismos registrados
         </h1>
-        <p className="text-small text-gray-500 dark:text-gray-400 mt-1">
-          {sismos.length} eventos registrados por fuentes oficiales
+        <p className="text-lead text-gray-600 dark:text-gray-300 mt-2 max-w-3xl">
+          Visualización geográfica de eventos sísmicos reportados por fuentes oficiales. Últimos {sismos.length} registros disponibles.
         </p>
       </header>
-      <div style={{ height: '70vh' }} className="rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm">
+      <div style={{ height: '70vh' }} className="rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 shadow-soft">
         <MapContainer
           center={[10.48, -66.90]}
           zoom={6}
@@ -78,7 +78,7 @@ export function MapaSismos() {
                 <p className="font-medium text-sm">{s.titulo}</p>
                 <p className="text-xs text-gray-500">{s.factcheck_confianza}% confianza</p>
                 <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-xs text-crisis-blue hover:underline">
-                  Ver mas
+                  Ver más
                 </a>
               </Popup>
             </Marker>

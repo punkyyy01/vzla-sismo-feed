@@ -9,7 +9,7 @@
 - npm: 11.14.1 (local). Team baseline: 11.13.0. Engine pin: `>=11.0.0`.
 - Agent skills installed at project scope (`./.agents/skills/`, gitignored; `skills-lock.json` tracked). See Session 002.
 - Frontend visual refresh applied on `feat/agent-skills-frontend`. See Session 003.
-- Current highest-priority unfinished feature: merge `feat/agent-skills-frontend` into `master` after team review, or continue with follow-up UX improvements (e.g. degraded-mode API guard).
+- Current highest-priority unfinished feature: merge `feat/agent-skills-frontend` into `master` after team review.
 - Current blocker: none for the verification harness. Local Supabase not provisioned (`.env.local` uses placeholders so dev server boots without a real DB; API routes now return fast degraded-mode empty responses in local dev).
 
 ## Session Log
@@ -153,3 +153,39 @@
 - Next best step:
   - Review and merge `feat/agent-skills-frontend` into `master`.
   - Optional follow-up: wire `SismosUSGS` into a page or tab.
+
+### Session 005 — 2026-06-28
+- Date: 2026-06-28
+- Goal: address user feedback that the page looked too centered and templated; redesign the feed and supporting pages to look more professional and appropriate for a Venezuela earthquake information resource.
+- Design decisions:
+  - Replaced the narrow centered column (`max-w-2xl mx-auto`) with a full-width dashboard layout (`max-w-8xl`) that uses the available screen real estate.
+  - Added a prominent hero section with the page title, live indicator, description, and key metrics (verified news count, date).
+  - Introduced a sticky left sidebar on desktop for search, language filter, category filter, and service status; this removes the crowded horizontal tag strip from the main content area.
+  - Kept the category tags accessible as a vertical list in the sidebar, with semantic color pills for each category.
+  - Updated cards to use the wider content area, larger headline type, and subtler shadows.
+  - Refined the palette: crisis red is now slightly deeper (`#B91C1C`) and surface colors were tuned for both light and dark modes.
+  - Improved dark mode surfaces so they are dark but not pure black (`surface-dark: #0B0F19`, `surface-elevated-dark: #111827`).
+  - Redesigned the navbar to be full-width with a stronger logo mark and clearer active states.
+  - Updated `/mapa` and `/stats` to use the same full-width layout and improved typography.
+- Files changed:
+  - `tailwind.config.js`: extended tokens with `hero/headline/lead` type scale, `surface` colors, `max-w-8xl`, and softer shadows.
+  - `src/app/globals.css`: tied body background to the new surface tokens.
+  - `src/components/Navbar.tsx`: full-width navbar with logo icon and refined navigation.
+  - `src/components/FeedNoticias.tsx`: two-column desktop layout (sidebar + feed), hero section, improved cards and empty states.
+  - `src/components/NumerosEmergencia.tsx`: consistent surface colors and cleaner modal styling.
+  - `src/app/stats/page.tsx`: full-width dashboard layout with larger hero stat and responsive category grid.
+  - `src/components/MapaSismos.tsx`: full-width map container and improved header.
+- Verification:
+  - `npx tsc --noEmit`: green.
+  - `./init.sh`: green (typecheck, build, PWA artifacts).
+  - Playwright MCP screenshots captured for the redesigned pages (saved under `screenshots/`, gitignored).
+- Commits (pending):
+  - `feat(ui): full-width professional redesign with sidebar, hero, and improved dashboard layout`
+- Files or artifacts updated: `tailwind.config.js`, `src/app/globals.css`, `src/components/Navbar.tsx`, `src/components/FeedNoticias.tsx`, `src/components/NumerosEmergencia.tsx`, `src/app/stats/page.tsx`, `src/components/MapaSismos.tsx`, `PROGRESS.md`.
+- Known risk or unresolved issue:
+  - With placeholder Supabase env, `/api/feed` returns degraded empty state; the UI now explains this clearly.
+  - The Leaflet map tile layer remains the default OpenStreetMap style, which is light even in dark mode. A future enhancement could load dark tiles when the system is in dark mode.
+  - Local dev server could not be kept running between tool calls in this session, but build-time and init.sh verification passed.
+- Next best step:
+  - Review and merge `feat/agent-skills-frontend` into `master`.
+  - Optional follow-up: integrate dark-mode map tiles and wire `SismosUSGS` into a dedicated page.

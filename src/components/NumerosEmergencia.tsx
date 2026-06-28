@@ -43,14 +43,14 @@ function NumberCard({ href, label, number, variant = 'default' }: NumberCardProp
       href={href}
       className={`flex flex-col p-3 rounded-lg border transition-colors ${
         isEmergency
-          ? 'bg-red-50 dark:bg-red-900/20 border-red-100 dark:border-red-800 hover:bg-red-100 dark:hover:bg-red-900/30'
-          : 'bg-gray-50 dark:bg-gray-800 border-gray-100 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700'
+          ? 'bg-crisis-red/5 dark:bg-crisis-red/10 border-crisis-red/10 dark:border-crisis-red/20 hover:bg-crisis-red/10 dark:hover:bg-crisis-red/20'
+          : 'bg-surface dark:bg-gray-900 border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800'
       }`}
     >
-      <span className={`text-caption font-medium ${isEmergency ? 'text-red-600 dark:text-red-300' : 'text-gray-500 dark:text-gray-400'}`}>
+      <span className={`text-caption font-medium ${isEmergency ? 'text-crisis-red dark:text-crisis-red-light' : 'text-gray-500 dark:text-gray-400'}`}>
         {label}
       </span>
-      <span className={`text-lg font-bold ${isEmergency ? 'text-red-900 dark:text-red-100' : 'text-gray-900 dark:text-white'}`}>
+      <span className={`text-lg font-bold ${isEmergency ? 'text-crisis-red-dark dark:text-crisis-red-light' : 'text-gray-900 dark:text-white'}`}>
         {number}
       </span>
     </a>
@@ -64,7 +64,7 @@ export function NumerosEmergencia() {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-5 right-5 bg-crisis-red hover:bg-crisis-red-dark text-white px-4 py-3 rounded-full shadow-lg transition-colors z-[60] flex items-center gap-2 font-semibold text-small"
+        className="fixed bottom-5 right-5 bg-crisis-red hover:bg-crisis-red-dark text-white px-4 py-3 rounded-full shadow-lift transition-colors z-[60] flex items-center gap-2 font-semibold text-small"
       >
         <PhoneIcon />
         <span className="hidden sm:inline">Emergencias</span>
@@ -74,9 +74,9 @@ export function NumerosEmergencia() {
 
   return (
     <div className="fixed inset-0 z-[1100] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm sm:p-4">
-      <div className="bg-white dark:bg-gray-900 w-full sm:max-w-md h-[85vh] sm:h-auto sm:max-h-[85vh] rounded-t-2xl sm:rounded-2xl shadow-2xl flex flex-col animate-fade-in">
+      <div className="bg-white dark:bg-gray-900 w-full sm:max-w-lg h-[85vh] sm:h-auto sm:max-h-[85vh] rounded-t-2xl sm:rounded-2xl shadow-2xl flex flex-col animate-fade-in">
         {/* Header */}
-        <div className="flex items-start justify-between p-5 border-b border-gray-100 dark:border-gray-700 shrink-0">
+        <div className="flex items-start justify-between p-5 border-b border-gray-100 dark:border-gray-800 shrink-0">
           <div>
             <h2 className="text-title text-gray-900 dark:text-white flex items-center gap-2">
               <WarningIcon />
@@ -110,22 +110,22 @@ export function NumerosEmergencia() {
           <section>
             <h3 className="text-caption font-bold uppercase text-gray-400 dark:text-gray-500 tracking-wider mb-3">Protección Civil</h3>
             <div className="space-y-2">
-              <a href="tel:08005588427" className="flex justify-between items-center bg-gray-50 dark:bg-gray-800 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-100 dark:border-gray-700 transition-colors">
+              <a href="tel:08005588427" className="flex justify-between items-center bg-surface dark:bg-gray-900 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 border border-gray-100 dark:border-gray-800 transition-colors">
                 <span className="text-small font-medium text-gray-700 dark:text-gray-200">Nacionales</span>
                 <span className="text-small font-bold text-gray-900 dark:text-white">0800-5588427</span>
               </a>
-              <a href="tel:04242075335" className="flex justify-between items-center bg-gray-50 dark:bg-gray-800 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-100 dark:border-gray-700 transition-colors">
+              <a href="tel:04242075335" className="flex justify-between items-center bg-surface dark:bg-gray-900 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 border border-gray-100 dark:border-gray-800 transition-colors">
                 <span className="text-small font-medium text-gray-700 dark:text-gray-200">La Guaira</span>
                 <span className="text-small font-bold text-gray-900 dark:text-white">0424-2075335</span>
               </a>
-              <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg border border-gray-100 dark:border-gray-700">
+              <div className="bg-surface dark:bg-gray-900 p-3 rounded-lg border border-gray-100 dark:border-gray-800">
                 <span className="block text-small font-medium text-gray-700 dark:text-gray-200 mb-2">Caracas (Central)</span>
                 <div className="flex gap-2">
                   <a href="tel:02125751823" className="flex-1 text-center py-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded text-small font-bold text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">(0212) 575-1823</a>
                   <a href="tel:02126318662" className="flex-1 text-center py-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded text-small font-bold text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">(0212) 631-8662</a>
                 </div>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg border border-gray-100 dark:border-gray-700">
+              <div className="bg-surface dark:bg-gray-900 p-3 rounded-lg border border-gray-100 dark:border-gray-800">
                 <span className="block text-small font-medium text-gray-700 dark:text-gray-200 mb-2">Caracas (Libertador)</span>
                 <div className="flex gap-2">
                   <a href="tel:08007253661" className="flex-1 text-center py-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded text-small font-bold text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">0800-725-3661</a>
@@ -139,14 +139,14 @@ export function NumerosEmergencia() {
           <section>
             <h3 className="text-caption font-bold uppercase text-gray-400 dark:text-gray-500 tracking-wider mb-3">Bomberos</h3>
             <div className="space-y-2">
-              <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg border border-gray-100 dark:border-gray-700">
+              <div className="bg-surface dark:bg-gray-900 p-3 rounded-lg border border-gray-100 dark:border-gray-800">
                 <span className="block text-small font-medium text-gray-700 dark:text-gray-200 mb-2">Caracas Metropolitana</span>
                 <div className="flex gap-2">
                   <a href="tel:02125454545" className="flex-1 text-center py-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded text-small font-bold text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">(0212) 545-4545</a>
                   <a href="tel:02125420243" className="flex-1 text-center py-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded text-small font-bold text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">(0212) 542-0243</a>
                 </div>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg border border-gray-100 dark:border-gray-700">
+              <div className="bg-surface dark:bg-gray-900 p-3 rounded-lg border border-gray-100 dark:border-gray-800">
                 <span className="block text-small font-medium text-gray-700 dark:text-gray-200 mb-2">La Guaira</span>
                 <div className="flex gap-2">
                   <a href="tel:02123327620" className="flex-1 text-center py-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded text-small font-bold text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">(0212) 332-7620</a>
@@ -160,11 +160,11 @@ export function NumerosEmergencia() {
           <section>
             <h3 className="text-caption font-bold uppercase text-gray-400 dark:text-gray-500 tracking-wider mb-3">Seguridad y Sismos</h3>
             <div className="space-y-2">
-              <a href="tel:08007654242" className="flex justify-between items-center bg-gray-50 dark:bg-gray-800 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-100 dark:border-gray-700 transition-colors">
+              <a href="tel:08007654242" className="flex justify-between items-center bg-surface dark:bg-gray-900 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 border border-gray-100 dark:border-gray-800 transition-colors">
                 <span className="text-small font-medium text-gray-700 dark:text-gray-200">Policía Nacional</span>
                 <span className="text-small font-bold text-gray-900 dark:text-white">0800-765-4242</span>
               </a>
-              <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg border border-gray-100 dark:border-gray-700">
+              <div className="bg-surface dark:bg-gray-900 p-3 rounded-lg border border-gray-100 dark:border-gray-800">
                 <span className="block text-small font-medium text-gray-700 dark:text-gray-200 mb-2">FUNVISIS — Reporte de sismos</span>
                 <a href="tel:08008362567" className="block text-center py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded text-small font-bold text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">0-800-TEMBLOR</a>
               </div>

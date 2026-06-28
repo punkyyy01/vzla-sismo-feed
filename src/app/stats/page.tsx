@@ -1,5 +1,5 @@
 const TAG_META: Record<string, { label: string; color: string }> = {
-  sismo:             { label: 'Sismo',            color: 'bg-red-500' },
+  sismo:             { label: 'Sismo',            color: 'bg-crisis-red' },
   rescate:           { label: 'Rescate',          color: 'bg-orange-500' },
   desaparecidos:     { label: 'Desaparecidos',    color: 'bg-purple-500' },
   puntos_acopio:     { label: 'Puntos de acopio', color: 'bg-green-500' },
@@ -31,37 +31,54 @@ export default async function StatsPage() {
   } catch { /* fail silently */ }
 
   const maxTag = Math.max(...Object.values(stats.por_tag), 1)
+  const tagEntries = Object.entries(TAG_META)
 
   return (
-    <main className="max-w-2xl mx-auto px-4 py-6">
-      {/* Total destacado */}
-      <div className="text-center mb-8">
-        <p className="text-6xl sm:text-7xl font-bold text-gray-900 dark:text-white tracking-tight">{stats.total_aprobadas}</p>
-        <p className="text-small text-gray-500 dark:text-gray-400 mt-2">noticias verificadas</p>
-        <p className="text-caption text-gray-400 dark:text-gray-500 mt-1">
-          Última actualización: {tiempoRelativo(stats.ultima_at)}
+    <main className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-10 py-8 lg:py-10">
+      {/* Header */}
+      <header className="mb-8 lg:mb-10">
+        <h1 className="text-display text-gray-900 dark:text-white">Estadísticas del feed</h1>
+        <p className="text-lead text-gray-600 dark:text-gray-300 mt-2 max-w-3xl">
+          Resumen de noticias verificadas por categoría. Última actualización: {tiempoRelativo(stats.ultima_at)}.
         </p>
-      </div>
+      </header>
+
+      {/* Total destacado */}
+      <section className="mb-8 lg:mb-10 p-6 lg:p-8 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-soft">
+        <div className="flex flex-col sm:flex-row sm:items-end gap-4 sm:gap-8">
+          <div>
+            <p className="text-7xl sm:text-8xl font-extrabold text-gray-900 dark:text-white tracking-tight">{stats.total_aprobadas}</p>
+            <p className="text-lead text-gray-500 dark:text-gray-400 mt-1">noticias verificadas</p>
+          </div>
+          <div className="sm:ml-auto text-left sm:text-right">
+            <p className="text-caption text-gray-400 dark:text-gray-500 uppercase tracking-wider font-semibold">Última actualización</p>
+            <p className="text-headline text-gray-900 dark:text-white">{tiempoRelativo(stats.ultima_at)}</p>
+          </div>
+        </div>
+      </section>
 
       {/* Grid por tag */}
-      <div className="grid grid-cols-2 gap-3">
-        {Object.entries(TAG_META).map(([tag, { label, color }]) => {
-          const count = stats.por_tag[tag] ?? 0
-          const pct = Math.round((count / maxTag) * 100)
-          return (
-            <div key={tag} className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-100 dark:border-gray-700">
-              <div className="flex items-center gap-2 mb-2">
-                <span className={`w-2 h-2 rounded-full ${color}`} />
-                <span className="text-caption text-gray-500 dark:text-gray-400">{label}</span>
+      <section>
+        <h2 className="text-headline text-gray-900 dark:text-white mb-5">Distribución por categoría</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {tagEntries.map(([tag, { label, color }]) => {
+            const count = stats.por_tag[tag] ?? 0
+            const pct = Math.round((count / maxTag) * 100)
+            return (
+              <div key={tag} className="bg-white dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800 shadow-soft">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className={`w-2.5 h-2.5 rounded-full ${color}`} />
+                  <span className="text-small text-gray-600 dark:text-gray-300">{label}</span>
+                </div>
+                <p className="text-3xl font-bold text-gray-900 dark:text-white mb-3">{count}</p>
+                <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                  <div className={`h-full ${color} rounded-full`} style={{ width: `${pct}%` }} />
+                </div>
               </div>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{count}</p>
-              <div className="h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
-                <div className={`h-full ${color} rounded-full`} style={{ width: `${pct}%` }} />
-              </div>
-            </div>
-          )
-        })}
-      </div>
+            )
+          })}
+        </div>
+      </section>
     </main>
   )
 }
