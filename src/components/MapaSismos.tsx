@@ -1,14 +1,9 @@
 'use client'
 
-import dynamic from 'next/dynamic'
 import { useEffect, useState, useMemo } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import L from 'leaflet'
-
-const MapContainer = dynamic(() => import('react-leaflet').then(m => m.MapContainer), { ssr: false })
-const TileLayer = dynamic(() => import('react-leaflet').then(m => m.TileLayer), { ssr: false })
-const Marker = dynamic(() => import('react-leaflet').then(m => m.Marker), { ssr: false })
-const Popup = dynamic(() => import('react-leaflet').then(m => m.Popup), { ssr: false })
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 
 type Sismo = {
   id: string
