@@ -4,12 +4,12 @@
 - Repository root: `/home/phylip/Downloads/vzla-sismo-feed`
 - Standard startup path: `./init.sh` (pwd, Node check, `npm ci`, `npx tsc --noEmit`, `npm run build`, PWA artifact check)
 - Standard verification path: `./init.sh` from a clean state. Last run: green.
-- Current branch: `feat/agent-skills-frontend` (rediseño editorial "boletín sísmico" aplicado en Session 006, listo para revisión).
+- Current branch: `feat/agent-skills-frontend` (rebased onto `upstream/master`, `./init.sh` green, ready for force-push and PR).
 - Node: v24.14.1 (local). Engine pin: `>=20.0.0` covers the team baseline.
 - npm: 11.14.1 (local). Team baseline: 11.13.0. Engine pin: `>=11.0.0`.
 - Agent skills installed at project scope (`./.agents/skills/`, gitignored; `skills-lock.json` tracked). See Session 002.
 - Frontend visual refresh applied on `feat/agent-skills-frontend`. See Session 003.
-- Current highest-priority unfinished feature: merge `feat/agent-skills-frontend` into `master` after team review.
+- Current highest-priority unfinished feature: push `feat/agent-skills-frontend` and open PR to `master` upstream.
 - Current blocker: none for the verification harness. Local Supabase not provisioned (`.env.local` uses placeholders so dev server boots without a real DB; API routes now return fast degraded-mode empty responses in local dev).
 
 ## Session Log
@@ -189,6 +189,26 @@
 - Next best step:
   - Review and merge `feat/agent-skills-frontend` into `master`.
   - Optional follow-up: integrate dark-mode map tiles and wire `SismosUSGS` into a dedicated page.
+
+### Session 007 — 2026-06-28
+- Date: 2026-06-28
+- Goal: reconcile `feat/agent-skills-frontend` with recent upstream `master` changes before opening a PR.
+- Completed:
+  - Added `upstream` remote and fetched latest `master`.
+  - Ran `git rebase upstream/master` on `feat/agent-skills-frontend`.
+  - Resolved merge conflicts in `src/components/FeedNoticias.tsx` and `src/components/SismosUSGS.tsx` by keeping the crisis-focused/editorial redesign versions from the feature branch.
+  - Verified the rebased branch with `./init.sh`: typecheck green, production build green (6/6 static pages), PWA artifacts present.
+- Files changed: `src/components/FeedNoticias.tsx`, `src/components/SismosUSGS.tsx` (conflict resolution), `PROGRESS.md`.
+- Verification:
+  - `git status`: working tree clean on `feat/agent-skills-frontend`.
+  - `./init.sh`: green.
+- Commits (pending):
+  - `docs(progress): update current state after rebasing feature branch onto upstream master`
+- Known risk or unresolved issue:
+  - The local branch history has diverged from `origin/feat/agent-skills-frontend` because of the rebase; a force-push (`--force-with-lease`) is required.
+- Next best step:
+  - `git push --force-with-lease origin feat/agent-skills-frontend`
+  - Open the PR from `feat/agent-skills-frontend` to the upstream `master` branch.
 
 ### Session 006 — 2026-06-28
 - Date: 2026-06-28
