@@ -33,6 +33,18 @@ type Sismo = {
   lng: number
 }
 
+function parseMag(titulo: string): number {
+  const match = titulo.match(/M(\d+(?:\.\d+)?)/)
+  return match ? parseFloat(match[1]) : 4
+}
+
+function magColor(mag: number): string {
+  if (mag >= 6) return '#DC2626'
+  if (mag >= 5) return '#EA580C'
+  if (mag >= 4) return '#CA8A04'
+  return '#16A34A'
+}
+
 function useDarkMode() {
   const [dark, setDark] = useState(false)
 
@@ -62,6 +74,7 @@ export function MapaSismos() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   ), [])
   const [sismos, setSismos] = useState<Sismo[]>([])
+  const [outline, setOutline] = useState<GeoJSON.GeoJsonObject | null>(null)
   const dark = useDarkMode()
 
   useEffect(() => {
