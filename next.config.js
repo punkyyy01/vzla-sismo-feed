@@ -11,7 +11,7 @@ const withPWA = require('next-pwa')({
       handler: 'StaleWhileRevalidate',
       options: {
         cacheName: 'api-feed',
-        expiration: { maxEntries: 20, maxAgeSeconds: 86400 },
+        expiration: { maxEntries: 30, maxAgeSeconds: 60 },
       },
     },
     {
