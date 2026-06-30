@@ -219,21 +219,19 @@ function ResumenEvento() {
         <span>{open ? '▲' : '▼'}</span>
       </button>
       {open && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4 items-start">
-          <div className="flex flex-col justify-between h-full">
-            <div className="grid grid-cols-2 gap-x-6 gap-y-4">
-              {RESUMEN_DATOS.map(({ num, label, red }) => (
-                <div key={label}>
-                  <p className={`font-mono text-xl font-bold ${red ? 'text-crisis-red' : 'text-ink dark:text-ink-dark'}`}>{num}</p>
-                  <p className="font-mono text-[10px] uppercase tracking-widest text-ink-muted dark:text-ink-muted-dark mt-0.5">{label}</p>
-                </div>
-              ))}
-            </div>
-            <p className="font-mono text-[10px] text-ink-muted dark:text-ink-muted-dark mt-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-6 items-center">
+          <div className="lg:col-span-7 grid grid-cols-2 gap-x-6 gap-y-4">
+            {RESUMEN_DATOS.map(({ num, label, red }) => (
+              <div key={label} className="border-l-2 border-rule dark:border-rule-dark pl-4 py-1">
+                <p className={`font-mono text-xl sm:text-2xl font-bold ${red ? 'text-crisis-red' : 'text-ink dark:text-ink-dark'}`}>{num}</p>
+                <p className="font-mono text-[9px] uppercase tracking-widest text-ink-muted dark:text-ink-muted-dark mt-0.5">{label}</p>
+              </div>
+            ))}
+            <p className="col-span-2 font-mono text-[10px] text-ink-muted dark:text-ink-muted-dark mt-2">
               Cifras provisionales · 28 jun 2026 · Fuente: medios verificados
             </p>
           </div>
-          <div className="w-full max-w-[340px] md:ml-auto">
+          <div className="lg:col-span-5 w-full max-w-[380px] lg:max-w-none mx-auto">
             <MapaVenezuelaSVG />
           </div>
         </div>

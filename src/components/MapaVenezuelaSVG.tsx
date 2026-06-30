@@ -21,6 +21,11 @@ export function MapaVenezuelaSVG() {
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
+          {/* Sombra suave para darle volumen al mapa (efecto premium flotante) */}
+          <filter id="glow" x="-10%" y="-10%" width="120%" height="120%">
+            <feDropShadow dx="0" dy="8" stdDeviation="12" floodColor="#000000" floodOpacity="0.3" />
+          </filter>
+
           {/* Marcador de flecha roja y minimalista */}
           <marker
             id="arrow"
@@ -35,84 +40,41 @@ export function MapaVenezuelaSVG() {
           </marker>
         </defs>
 
-        {/* 1. Dibujo de la tierra (Venezuela) en gris neutro */}
-        <g className="fill-neutral-200 stroke-neutral-300 dark:fill-zinc-800 dark:stroke-zinc-700 transition-colors duration-300">
+        {/* 1. Dibujo de la tierra (Venezuela) con sombra y estilo premium */}
+        <g 
+          filter="url(#glow)"
+          className="fill-neutral-200/90 stroke-neutral-400 dark:fill-zinc-800/90 dark:stroke-zinc-700 transition-colors duration-300"
+        >
           {VENEZUELA_PATHS.map((path, idx) => (
-            <path key={idx} d={path} strokeWidth="1.2" strokeLinejoin="round" />
+            <path key={idx} d={path} strokeWidth="1.5" strokeLinejoin="round" />
           ))}
         </g>
 
-        {/* 2. Ciudades de referencia (puntos grises discretos) */}
+        {/* 2. Ciudades de referencia (puntos discretos) */}
         {/* Maracaibo */}
-        <g>
-          <circle cx="129.1" cy="100.8" r="3.5" className="fill-neutral-400 dark:fill-zinc-600" />
-          <text
-            x="129.1"
-            y="92"
-            textAnchor="middle"
-            className="font-mono text-[9px] fill-neutral-400 dark:fill-zinc-500"
-          >
-            Maracaibo
-          </text>
-        </g>
+        <circle cx="129.1" cy="100.8" r="3" className="fill-neutral-400 dark:fill-zinc-500" />
 
         {/* Caracas */}
-        <g>
-          <circle cx="383.6" cy="107.9" r="3.5" className="fill-neutral-400 dark:fill-zinc-600" />
-          <text
-            x="383.6"
-            y="118"
-            textAnchor="middle"
-            className="font-mono text-[9px] fill-neutral-400 dark:fill-zinc-500"
-          >
-            Caracas
-          </text>
-        </g>
+        <circle cx="383.6" cy="107.9" r="3" className="fill-neutral-400 dark:fill-zinc-500" />
 
-        {/* La Guaira (ciudad afectada - marcado en rojo sutil) */}
-        <g>
-          <circle cx="382.0" cy="102.0" r="4" fill="#dc2626" />
-          <text
-            x="440"
-            y="80"
-            textAnchor="middle"
-            className="font-mono text-[9px] font-bold fill-crisis-red uppercase tracking-wider"
-          >
-            La Guaira
-          </text>
-          <text
-            x="440"
-            y="91"
-            textAnchor="middle"
-            className="font-mono text-[8px] fill-neutral-400 dark:fill-zinc-500"
-          >
-            (más afectada)
-          </text>
-          <path
-            d="M 420 86 Q 405 92 387 100"
-            fill="none"
-            stroke="#dc2626"
-            strokeWidth="1"
-            strokeDasharray="2 2"
-            markerEnd="url(#arrow)"
-          />
-        </g>
+        {/* La Guaira (ciudad afectada - marcado en rojo) */}
+        <circle cx="382.0" cy="102.0" r="4.5" fill="#dc2626" />
 
-        {/* 3. Epicentros con ondas de expansión en rojo (animación de anillos pulse) */}
+        {/* 3. Epicentros con ondas de expansión en rojo (animación de anillos pulse mejorada) */}
         {/* Epicentro 1: San Felipe Yaracuy (M7.2) */}
         <g>
           <circle cx="284.6" cy="108.4" r="5" fill="#dc2626" />
           <circle cx="284.6" cy="108.4" r="5" fill="none" stroke="#dc2626" strokeWidth="1.5">
-            <animate attributeName="r" values="5;30" dur="2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="1;0" dur="2s" repeatCount="indefinite" />
+            <animate attributeName="r" values="5;35" dur="2.2s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="1;0" dur="2.2s" repeatCount="indefinite" />
           </circle>
           <circle cx="284.6" cy="108.4" r="5" fill="none" stroke="#dc2626" strokeWidth="1">
-            <animate attributeName="r" values="5;50" dur="2s" begin="0.6s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="1;0" dur="2s" begin="0.6s" repeatCount="indefinite" />
+            <animate attributeName="r" values="5;60" dur="2.2s" begin="0.7s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="1;0" dur="2.2s" begin="0.7s" repeatCount="indefinite" />
           </circle>
           <circle cx="284.6" cy="108.4" r="5" fill="none" stroke="#dc2626" strokeWidth="0.8">
-            <animate attributeName="r" values="5;70" dur="2s" begin="1.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="1;0" dur="2s" begin="1.2s" repeatCount="indefinite" />
+            <animate attributeName="r" values="5;85" dur="2.2s" begin="1.4s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="1;0" dur="2.2s" begin="1.4s" repeatCount="indefinite" />
           </circle>
         </g>
 
@@ -120,76 +82,92 @@ export function MapaVenezuelaSVG() {
         <g>
           <circle cx="324.7" cy="122.0" r="5" fill="#dc2626" />
           <circle cx="324.7" cy="122.0" r="5" fill="none" stroke="#dc2626" strokeWidth="1.5">
-            <animate attributeName="r" values="5;30" dur="2s" begin="0.3s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="1;0" dur="2s" begin="0.3s" repeatCount="indefinite" />
+            <animate attributeName="r" values="5;35" dur="2.2s" begin="0.3s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="1;0" dur="2.2s" begin="0.3s" repeatCount="indefinite" />
           </circle>
           <circle cx="324.7" cy="122.0" r="5" fill="none" stroke="#dc2626" strokeWidth="1">
-            <animate attributeName="r" values="5;50" dur="2s" begin="0.9s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="1;0" dur="2s" begin="0.9s" repeatCount="indefinite" />
+            <animate attributeName="r" values="5;60" dur="2.2s" begin="1s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="1;0" dur="2.2s" begin="1s" repeatCount="indefinite" />
           </circle>
           <circle cx="324.7" cy="122.0" r="5" fill="none" stroke="#dc2626" strokeWidth="0.8">
-            <animate attributeName="r" values="5;70" dur="2s" begin="1.5s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="1;0" dur="2s" begin="1.5s" repeatCount="indefinite" />
+            <animate attributeName="r" values="5;85" dur="2.2s" begin="1.7s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="1;0" dur="2.2s" begin="1.7s" repeatCount="indefinite" />
           </circle>
         </g>
 
-        {/* 4. Señalizaciones de los Terremotos (Líneas finas rojas y etiquetas de texto) */}
-        {/* Señalización Terremoto 1 (San Felipe) */}
-        <g>
-          <text
-            x="170"
-            y="55"
-            textAnchor="middle"
-            className="font-mono text-[9px] fill-neutral-600 dark:fill-zinc-400 font-semibold uppercase tracking-wider"
-          >
-            Primer Terremoto
-          </text>
-          <text
-            x="170"
-            y="70"
-            textAnchor="middle"
-            className="font-sans text-xs fill-crisis-red font-bold"
-          >
-            7,2 (Yaracuy)
-          </text>
-          {/* Línea indicativa */}
-          <path
-            d="M 210 65 Q 240 65 277 101"
-            fill="none"
-            stroke="#dc2626"
-            strokeWidth="1"
-            markerEnd="url(#arrow)"
-          />
-        </g>
+        {/* 4. Líneas indicadoras de las etiquetas */}
+        {/* Línea Terremoto 1 */}
+        <path
+          d="M 170 55 Q 220 55 277 101"
+          fill="none"
+          stroke="#dc2626"
+          strokeWidth="1.2"
+          strokeDasharray="2 2"
+          markerEnd="url(#arrow)"
+        />
 
-        {/* Señalización Terremoto 2 (Valencia) */}
-        <g>
-          <text
-            x="440"
-            y="155"
-            textAnchor="middle"
-            className="font-mono text-[9px] fill-neutral-600 dark:fill-zinc-400 font-semibold uppercase tracking-wider"
-          >
-            Segundo Terremoto
-          </text>
-          <text
-            x="440"
-            y="170"
-            textAnchor="middle"
-            className="font-sans text-xs fill-crisis-red font-bold"
-          >
-            7,5 (Carabobo)
-          </text>
-          {/* Línea indicativa */}
-          <path
-            d="M 390 155 Q 350 155 331 130"
-            fill="none"
-            stroke="#dc2626"
-            strokeWidth="1"
-            markerEnd="url(#arrow)"
-          />
-        </g>
+        {/* Línea Terremoto 2 */}
+        <path
+          d="M 445 160 Q 380 165 331 130"
+          fill="none"
+          stroke="#dc2626"
+          strokeWidth="1.2"
+          strokeDasharray="2 2"
+          markerEnd="url(#arrow)"
+        />
+
+        {/* Línea La Guaira */}
+        <path
+          d="M 465 72 Q 425 72 389 95"
+          fill="none"
+          stroke="#dc2626"
+          strokeWidth="1"
+          strokeDasharray="2 2"
+          markerEnd="url(#arrow)"
+        />
       </svg>
+
+      {/* 5. Etiquetas HTML Absolutas (Garantizan legibilidad 100% nítida a cualquier escala) */}
+      
+      {/* Maracaibo */}
+      <span className="absolute left-[13%] top-[13%] font-mono text-[9px] font-medium text-neutral-500 dark:text-zinc-500 pointer-events-none">
+        Maracaibo
+      </span>
+
+      {/* Caracas */}
+      <span className="absolute left-[49%] top-[19%] font-mono text-[9px] font-medium text-neutral-500 dark:text-zinc-500 pointer-events-none">
+        Caracas
+      </span>
+
+      {/* Primer Terremoto */}
+      <div className="absolute left-[2%] top-[3%] flex flex-col text-left bg-panel/80 dark:bg-panel-dark/80 backdrop-blur-[2px] p-1.5 rounded border border-rule/50 dark:border-rule-dark/50 pointer-events-none">
+        <span className="font-mono text-[9px] font-bold text-neutral-500 dark:text-zinc-400 uppercase tracking-wider leading-none">
+          1er Terremoto
+        </span>
+        <span className="font-sans text-xs font-black text-crisis-red mt-0.5 leading-none">
+          7,2 <span className="text-[10px] text-neutral-500 dark:text-zinc-500 font-normal">(Yaracuy)</span>
+        </span>
+      </div>
+
+      {/* Segundo Terremoto */}
+      <div className="absolute left-[52%] top-[27%] flex flex-col text-left bg-panel/80 dark:bg-panel-dark/80 backdrop-blur-[2px] p-1.5 rounded border border-rule/50 dark:border-rule-dark/50 pointer-events-none">
+        <span className="font-mono text-[9px] font-bold text-neutral-500 dark:text-zinc-400 uppercase tracking-wider leading-none">
+          2do Terremoto
+        </span>
+        <span className="font-sans text-xs font-black text-crisis-red mt-0.5 leading-none">
+          7,5 <span className="text-[10px] text-neutral-500 dark:text-zinc-500 font-normal">(Carabobo)</span>
+        </span>
+      </div>
+
+      {/* La Guaira */}
+      <div className="absolute left-[59%] top-[7%] flex flex-col text-left pointer-events-none">
+        <span className="font-mono text-[9px] font-black text-crisis-red uppercase tracking-wider leading-none">
+          La Guaira
+        </span>
+        <span className="font-mono text-[8px] text-neutral-500 dark:text-zinc-500 mt-0.5 leading-none">
+          (más afectada)
+        </span>
+      </div>
     </div>
   )
 }
