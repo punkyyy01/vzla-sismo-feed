@@ -16,6 +16,18 @@
 
 ## Session Log
 
+### Session 009 — 2026-06-30
+- Date: 2026-06-30
+- Goal: add an interactive SVG map of Venezuela showing the double earthquake epicenters and affected areas.
+- Completed:
+  - Created [MapaVenezuelaSVG.tsx](file:///g:/Projects/vzla-sismo-feed/src/components/MapaVenezuelaSVG.tsx) using projected GeoJSON coordinates to render a lightweight, responsive vector map of Venezuela.
+  - Added animated seismic waves at the epicenters (San Felipe and Valencia) and styled shaking and coastal impact zones.
+  - Integrated the map into the `ResumenEvento` widget in [FeedNoticias.tsx](file:///g:/Projects/vzla-sismo-feed/src/components/FeedNoticias.tsx) in a responsive two-column layout.
+- Verification:
+  - Run typecheck and production build successfully. All checks passed.
+- Commits:
+  - `d4b29db` feat(frontend): add interactive SVG map of Venezuela to event summary
+
 ### Session 008 — 2026-06-28
 - Date: 2026-06-28
 - Goal: implement the user-approved map and emergency-feed improvements across five independent feature branches.
