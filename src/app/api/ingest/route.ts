@@ -1,6 +1,7 @@
 // src/app/api/ingest/route.ts
 // Cron job: jala RSS, pre-filtra, manda a Groq (fact-check), guarda en Supabase
-// Llamado por Vercel Cron cada 5 minutos (ver vercel.json)
+// Disparado cada 5 min por GitHub Actions (.github/workflows/ingest-cron.yml),
+// no por Vercel Cron: el plan Hobby de Vercel limita los cron a 1 vez por día.
 
 import { createClient } from '@supabase/supabase-js'
 import Parser from 'rss-parser'
