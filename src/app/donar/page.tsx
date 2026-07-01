@@ -182,10 +182,6 @@ function ArrowIcon() {
 }
 
 function OrgCard({ org, index }: { org: Organizacion; index: number }) {
-  const base = `
-    group relative block bg-panel dark:bg-panel-dark border border-rule dark:border-rule-dark
-    border-l-[3px] border-l-crisis-red p-5 h-full transition-colors
-  `
   const motionProps = {
     initial: { opacity: 0, y: 14 },
     whileInView: { opacity: 1, y: 0 },
@@ -195,32 +191,42 @@ function OrgCard({ org, index }: { org: Organizacion; index: number }) {
 
   if (!org.url) {
     return (
-      <motion.div {...motionProps} className={`${base} opacity-80`}>
-        <h3 className="font-serif font-semibold text-ink dark:text-ink-dark text-base mb-1.5 pr-5">{org.nombre}</h3>
-        <p className="text-small text-ink-muted dark:text-ink-muted-dark">{org.descripcion}</p>
-        <span className="absolute top-5 right-4 font-mono text-[9px] uppercase tracking-widest text-ink-muted dark:text-ink-muted-dark">
-          Sin link
+      <motion.div
+        {...motionProps}
+        className="group relative block bg-panel/60 dark:bg-panel-dark/60 border border-rule dark:border-rule-dark p-5 h-full rounded-sm"
+      >
+        <span className="absolute top-5 right-4 font-mono text-[9px] uppercase tracking-widest text-ink-muted/70 dark:text-ink-muted-dark/70 bg-paper dark:bg-paper-dark px-1.5 py-0.5 rounded-sm">
+          Socio local
         </span>
+        <h3 className="font-serif font-semibold text-ink/70 dark:text-ink-dark/70 text-base mb-1.5 pr-16">
+          {org.nombre}
+        </h3>
+        <p className="text-small text-ink-muted/80 dark:text-ink-muted-dark/80">
+          {org.descripcion}
+        </p>
       </motion.div>
     )
   }
+
   return (
     <motion.a
       {...motionProps}
       href={org.url}
       target="_blank"
       rel="noopener noreferrer"
-      whileHover={{ y: -4, transition: { duration: 0.15 } }}
-      whileTap={{ scale: 0.97 }}
-      className={`${base} hover:bg-[#1A1A1A] hover:shadow-lg hover:shadow-black/20 active:bg-[#1A1A1A]`}
+      whileHover={{ y: -3, transition: { duration: 0.15 } }}
+      whileTap={{ scale: 0.98 }}
+      className="group relative block bg-panel dark:bg-panel-dark border border-rule dark:border-rule-dark p-5 h-full rounded-sm hover:border-crisis-red/30 dark:hover:border-crisis-red/40 hover:bg-ink/[0.01] dark:hover:bg-ink-dark/[0.01] hover:shadow-soft transition-all duration-200"
     >
-      <span className="absolute top-5 right-4 text-ink-muted dark:text-ink-muted-dark opacity-0 group-hover:opacity-100 group-active:opacity-100 group-hover:text-crisis-red group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all">
+      <span className="absolute top-5 right-4 text-ink-muted dark:text-ink-muted-dark opacity-30 group-hover:opacity-100 group-hover:text-crisis-red group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all">
         <ArrowIcon />
       </span>
-      <h3 className="font-serif font-semibold text-ink dark:text-ink-dark text-base mb-1.5 pr-5 group-hover:text-crisis-red transition-colors">
+      <h3 className="font-serif font-semibold text-ink dark:text-ink-dark text-base mb-1.5 pr-8 group-hover:text-crisis-red transition-colors">
         {org.nombre}
       </h3>
-      <p className="text-small text-ink-muted dark:text-ink-muted-dark">{org.descripcion}</p>
+      <p className="text-small text-ink-muted dark:text-ink-muted-dark">
+        {org.descripcion}
+      </p>
     </motion.a>
   )
 }
@@ -233,14 +239,13 @@ function InsumoCard({ item, index }: { item: string; index: number }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-40px' }}
       transition={{ duration: 0.3, delay: Math.min(index, 10) * 0.04, ease: 'easeOut' }}
-      whileHover={{ y: -4, scale: 1.02, transition: { duration: 0.15 } }}
-      whileTap={{ scale: 0.96 }}
-      className="group flex flex-col items-start gap-3 bg-panel dark:bg-panel-dark border border-rule dark:border-rule-dark
-                 border-l-[3px] border-l-crisis-red px-4 py-5 hover:bg-crisis-red/[0.08] hover:border-l-crisis-red
-                 hover:shadow-lg hover:shadow-black/10 transition-colors"
+      whileHover={{ y: -3, transition: { duration: 0.15 } }}
+      whileTap={{ scale: 0.97 }}
+      className="group flex flex-col items-start gap-4 bg-panel dark:bg-panel-dark border border-rule dark:border-rule-dark
+                 p-5 rounded-sm hover:border-crisis-red/30 dark:hover:border-crisis-red/40 hover:shadow-soft transition-all duration-200"
     >
-      <span className="flex items-center justify-center w-11 h-11 rounded-full bg-crisis-red/10 text-crisis-red shrink-0 group-hover:bg-crisis-red group-hover:text-white transition-colors">
-        <span className="w-6 h-6"><Icon /></span>
+      <span className="flex items-center justify-center w-10 h-10 rounded-md bg-paper dark:bg-paper-dark border border-rule dark:border-rule-dark text-ink-muted dark:text-ink-muted-dark shrink-0 group-hover:bg-crisis-red/10 group-hover:text-crisis-red group-hover:border-crisis-red/20 transition-all duration-200">
+        <span className="w-5 h-5"><Icon /></span>
       </span>
       <span className="font-serif font-semibold text-ink dark:text-ink-dark leading-snug">{item}</span>
     </motion.div>
@@ -251,54 +256,84 @@ export default function DonarPage() {
   const [imgOk, setImgOk] = useState(true)
 
   return (
-    <main className="pb-10 lg:pb-14">
-      {/* Hero: foto real de fondo con degradado hacia el fondo de la página. Si la
-          imagen no carga (sin conexión, dominio caído), se oculta sola y queda un
-          fondo sólido — no un ícono de imagen rota. */}
-      <div className="relative h-64 sm:h-80 lg:h-96 overflow-hidden bg-panel dark:bg-panel-dark">
-        {imgOk && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src="https://commons.wikimedia.org/wiki/Special:FilePath/GuLong_canned_food_on_the_shelf.jpg"
-            alt=""
-            className="absolute inset-0 w-full h-full object-cover"
-            onError={() => setImgOk(false)}
-          />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-paper/85 to-paper dark:from-black/40 dark:via-paper-dark/85 dark:to-paper-dark" />
-        <div className="relative z-10 h-full max-w-8xl mx-auto px-4 sm:px-6 lg:px-10 flex flex-col justify-end pb-8">
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className="text-eyebrow uppercase text-crisis-red mb-3"
-          >
-            Cómo ayudar
-          </motion.p>
-          <motion.h1
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, delay: 0.05 }}
-            className="font-serif text-display text-ink dark:text-ink-dark"
-          >
-            Guía para donar
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, delay: 0.1 }}
-            className="text-lead text-ink-muted dark:text-ink-muted-dark mt-3 max-w-prose"
-          >
-            Insumos más necesitados y organizaciones verificadas que están canalizando ayuda a Venezuela. Tocá cualquier tarjeta para abrir la página oficial.
-          </motion.p>
+    <main className="pb-12 lg:pb-16">
+      {/* Hero: diseño editorial asimétrico de dos columnas */}
+      <div className="relative pt-12 pb-10 lg:pt-16 lg:pb-14 border-b border-rule dark:border-rule-dark mb-10">
+        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            <div className="lg:col-span-7 flex flex-col justify-center">
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4 }}
+                className="font-mono text-[10px] uppercase tracking-widest text-crisis-red mb-3 font-semibold"
+              >
+                Iniciativa Humanitaria
+              </motion.div>
+              <motion.h1
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45, delay: 0.05 }}
+                className="font-serif text-hero lg:text-masthead text-ink dark:text-ink-dark"
+              >
+                Guía para donar
+              </motion.h1>
+              <motion.p
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45, delay: 0.1 }}
+                className="text-lead text-ink/75 dark:text-ink-dark/75 mt-4 max-w-prose"
+              >
+                Directorio verificado de organizaciones y requerimientos urgentes de ayuda humanitaria para los afectados por el sismo en Venezuela. Tocá cualquier recurso para acceder a los canales oficiales.
+              </motion.p>
+            </div>
+            <div className="lg:col-span-5 relative">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.15 }}
+                className="relative overflow-hidden bg-panel dark:bg-panel-dark border border-rule dark:border-rule-dark rounded-sm p-3 shadow-soft"
+              >
+                <div className="relative aspect-[16/10] overflow-hidden bg-paper dark:bg-paper-dark rounded-sm">
+                  {imgOk ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src="https://upload.wikimedia.org/wikipedia/commons/e/ec/GuLong_canned_food_on_the_shelf.jpg"
+                      alt="Donación de alimentos e insumos"
+                      className="w-full h-full object-cover filter grayscale contrast-[1.05] dark:brightness-90"
+                      onError={() => setImgOk(false)}
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex flex-col justify-center items-center p-6 text-center bg-crisis-red/5 dark:bg-crisis-red/10">
+                      <span className="font-serif font-semibold text-lg text-crisis-red mb-2">Ayuda Directa</span>
+                      <p className="text-xs text-ink/75 dark:text-ink-dark/75 max-w-xs">
+                        Cada aporte canalizado a través de estas organizaciones llega directamente a las zonas de desastre en Venezuela.
+                      </p>
+                    </div>
+                  )}
+                </div>
+                <div className="mt-2.5 flex justify-between items-center px-1 font-mono text-[9px] text-ink-muted dark:text-ink-muted-dark uppercase tracking-widest">
+                  <span>Registro de asistencia</span>
+                  <span>Junio 2026</span>
+                </div>
+              </motion.div>
+            </div>
+          </div>
         </div>
       </div>
 
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-10">
         {/* Insumos */}
-        <section className="mb-14">
-          <h2 className="text-eyebrow uppercase text-ink-muted dark:text-ink-muted-dark mb-4">Insumos más necesitados</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+        <section className="mb-16">
+          <div className="flex flex-col mb-6">
+            <h2 className="font-serif text-display text-ink dark:text-ink-dark">
+              Insumos prioritarios
+            </h2>
+            <p className="text-small text-ink/75 dark:text-ink-dark/75 mt-1">
+              Alimentos no perecederos y suministros médicos esenciales solicitados en los centros de acopio.
+            </p>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {INSUMOS.map((item, i) => (
               <InsumoCard key={item} item={item} index={i} />
             ))}
@@ -306,45 +341,56 @@ export default function DonarPage() {
         </section>
 
         {/* Donaciones monetarias */}
-        <section className="mb-14">
-          <h2 className="text-eyebrow uppercase text-ink-muted dark:text-ink-muted-dark mb-4">Dónde donar dinero</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
+        <section className="mb-16">
+          <div className="flex flex-col mb-6">
+            <h2 className="font-serif text-display text-ink dark:text-ink-dark">
+              Dónde donar dinero
+            </h2>
+            <p className="text-small text-ink/75 dark:text-ink-dark/75 mt-1">
+              Entidades internacionales y locales con despliegue activo sobre el terreno.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
             {ORGANIZACIONES.map((org, i) => (
               <OrgCard key={org.nombre} org={org} index={i} />
             ))}
           </div>
         </section>
 
-        {/* Fuentes */}
-        <section className="bg-panel dark:bg-panel-dark border border-rule dark:border-rule-dark p-5">
-          <p className="font-mono text-[10px] uppercase tracking-widest text-ink-muted dark:text-ink-muted-dark mb-2">Verificar más organizaciones</p>
-          <p className="text-small text-ink-muted dark:text-ink-muted-dark max-w-prose mb-3">
-            Antes de donar a una campaña que no reconozcas, revisá su trayectoria en{' '}
-            <a href="https://donarseguro.com" target="_blank" rel="noopener noreferrer" className="text-crisis-red hover:underline">
+        {/* Fuentes y Seguridad */}
+        <section className="bg-panel dark:bg-panel-dark border border-rule dark:border-rule-dark p-6 rounded-sm mb-12">
+          <h3 className="font-serif font-semibold text-lg text-ink dark:text-ink-dark mb-2">
+            Seguridad en la donación
+          </h3>
+          <p className="text-small text-ink/75 dark:text-ink-dark/75 max-w-prose mb-4">
+            Antes de transferir fondos a cualquier campaña personal o de terceros no listados, verificá su legitimidad en{' '}
+            <a href="https://donarseguro.com" target="_blank" rel="noopener noreferrer" className="text-crisis-red font-medium hover:underline">
               donarseguro.com
             </a>
-            , un directorio de campañas legítimas para el terremoto de Venezuela.
+            , una plataforma ciudadana dedicada a validar iniciativas de ayuda humanitaria para el terremoto de Venezuela.
           </p>
-          <p className="font-mono text-[10px] text-ink-muted dark:text-ink-muted-dark">
-            Fuentes:{' '}
-            <a
-              href="https://lga.lagranaldea.com/2026/06/28/guia-completa-para-ayudar-a-venezuela-tras-el-terremoto-donde-buscar-personas-como-donar-y-que-hacer/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline hover:text-ink dark:hover:text-ink-dark"
-            >
-              La Gran Aldea
-            </a>
-            {' · '}
-            <a
-              href="https://alumnusb.org/ayuda-tras-terremoto/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline hover:text-ink dark:hover:text-ink-dark"
-            >
-              AlumnUSB
-            </a>
-          </p>
+          <div className="border-t border-rule dark:border-rule-dark pt-4 flex flex-wrap gap-x-6 gap-y-2 font-mono text-[10px] text-ink-muted dark:text-ink-muted-dark">
+            <span>
+              Fuentes oficiales y reportes:{' '}
+              <a
+                href="https://lga.lagranaldea.com/2026/06/28/guia-completa-para-ayudar-a-venezuela-tras-el-terremoto-donde-buscar-personas-como-donar-y-que-hacer/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-ink dark:hover:text-ink-dark transition-colors"
+              >
+                La Gran Aldea
+              </a>
+              {' · '}
+              <a
+                href="https://alumnusb.org/ayuda-tras-terremoto/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-ink dark:hover:text-ink-dark transition-colors"
+              >
+                AlumnUSB
+              </a>
+            </span>
+          </div>
         </section>
       </div>
     </main>
