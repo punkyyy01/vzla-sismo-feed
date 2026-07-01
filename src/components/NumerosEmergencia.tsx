@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 function PhoneIcon() {
   return (
@@ -143,6 +143,16 @@ function PlatformCard({ href, icon, title, description, badgeColor = 'blue' }: {
 
 export function NumerosEmergencia() {
   const [isOpen, setIsOpen] = useState(false)
+  const btnRef = useRef<HTMLButtonElement>(null)
+
+  // Attach click listener via native DOM to bypass React synthetic event issues
+  useEffect(() => {
+    const btn = btnRef.current
+    if (!btn) return
+    const open = () => setIsOpen(true)
+    btn.addEventListener('click', open)
+    return () => btn.removeEventListener('click', open)
+  }, [])
 
   // Scroll lock when modal is open
   useEffect(() => {
@@ -175,7 +185,7 @@ export function NumerosEmergencia() {
     <>
       {!isOpen && (
         <button
-          onClick={() => setIsOpen(true)}
+          ref={btnRef}
           className="fixed bottom-5 right-5 bg-crisis-red hover:bg-crisis-red-light active:scale-95 hover:-translate-y-0.5 text-white px-5 py-3 shadow-lift z-[60] flex items-center gap-2.5 text-eyebrow uppercase rounded-sm border border-crisis-red-dark/20 transition-all duration-150"
         >
           <PhoneIcon />
