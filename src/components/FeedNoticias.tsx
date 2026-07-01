@@ -147,6 +147,33 @@ function CloseIcon() {
   )
 }
 
+function CheckIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M20 6 9 17l-5-5" />
+    </svg>
+  )
+}
+
+function LinkIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+    </svg>
+  )
+}
+
+function AlertTriangleIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+      <path d="M12 9v4" />
+      <path d="M12 17h.01" />
+    </svg>
+  )
+}
+
 const HINT_ACCIONES_KEY = 'sismo-hint-acciones-v1'
 
 // One-time, dismissible feature hint pointing at the alerts/export controls.
@@ -221,7 +248,7 @@ function FeedActionButtons({
         </span>
       )}
       <button onClick={onExportar} className={ACTION_BUTTON_CLASS}>
-        {exportado ? '✓' : <ExportIcon />}
+        {exportado ? <CheckIcon /> : <ExportIcon />}
         {exportado ? 'Copiado' : 'Exportar'}
       </button>
     </>
@@ -478,7 +505,7 @@ export function FeedNoticias({ initialData }: { initialData?: Noticia[] }) {
         }
         // Feature 5: browser notification for replicas
         if (nueva.tag === 'replicas' && notifPermisoRef.current === 'granted') {
-          new Notification('⚠ Réplica — Sismo Venezuela', {
+          new Notification('Réplica — Sismo Venezuela', {
             body: nueva.titulo,
             icon: '/icon-192.png',
           })
@@ -778,9 +805,10 @@ export function FeedNoticias({ initialData }: { initialData?: Noticia[] }) {
                           setCopiadoId(n.id)
                           setTimeout(() => setCopiadoId(prev => prev === n.id ? null : prev), 1500)
                         }}
+                        aria-label="Copiar enlace"
                         className="font-mono text-[10px] uppercase tracking-widest text-ink-muted dark:text-ink-muted-dark hover:text-ink dark:hover:text-ink-dark transition-colors px-2 py-1"
                       >
-                        {copiadoId === n.id ? '✓' : '🔗'}
+                        {copiadoId === n.id ? <CheckIcon /> : <LinkIcon />}
                       </button>
                     </div>
                   </motion.a>
@@ -814,8 +842,9 @@ export function FeedNoticias({ initialData }: { initialData?: Noticia[] }) {
         >
           <div className="flex items-start justify-between gap-3 p-3">
             <div className="min-w-0">
-              <p className="font-mono text-[11px] uppercase tracking-widest font-bold text-black">
-                ⚠ Réplica detectada
+              <p className="font-mono text-[11px] uppercase tracking-widest font-bold text-black flex items-center gap-1.5">
+                <AlertTriangleIcon />
+                Réplica detectada
               </p>
               <p className="text-sm font-serif text-black mt-1 leading-snug">
                 {replicaToast}
@@ -823,9 +852,10 @@ export function FeedNoticias({ initialData }: { initialData?: Noticia[] }) {
             </div>
             <button
               onClick={() => setReplicaToast(null)}
-              className="font-mono text-black text-lg leading-none shrink-0 hover:opacity-70 transition-opacity"
+              aria-label="Cerrar aviso de réplica"
+              className="text-black shrink-0 hover:opacity-70 transition-opacity"
             >
-              ✕
+              <CloseIcon />
             </button>
           </div>
         </motion.div>
