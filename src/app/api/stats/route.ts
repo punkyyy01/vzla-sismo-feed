@@ -36,9 +36,10 @@ export async function GET() {
   const por_tag: Record<string, number> = {}
   TAGS.forEach((tag, i) => { por_tag[tag] = tagResults[i].count ?? 0 })
 
-  // Para cada tipo de cifra, tomamos el valor no-nulo más reciente entre las
-  // noticias aprobadas — es decir, el último reporte verificado, no un máximo
-  // acumulado (una corrección oficial a la baja también debe reflejarse).
+  // Para cada tipo de cifra, tomamos el valor MÁS ALTO reportado entre las
+  // noticias aprobadas — el fact-checker ya filtra que sea una cifra oficial a
+  // nivel país (no un balance local), y los balances oficiales de un desastre
+  // prácticamente nunca bajan, así que el máximo es el dato correcto a mostrar.
   const cifraResults = await Promise.all(
     CAMPOS_CIFRAS.map(campo =>
       supabase
@@ -46,7 +47,7 @@ export async function GET() {
         .select(`${campo}, publicado_at, fuente`)
         .eq('factcheck_status', 'aprobado')
         .not(campo, 'is', null)
-        .order('publicado_at', { ascending: false })
+        .order(campo, { ascending: false })
         .limit(1)
         .maybeSingle()
     )

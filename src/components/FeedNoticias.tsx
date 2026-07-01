@@ -267,11 +267,13 @@ function ResumenEvento({ cifras }: { cifras: CifrasStats | null }) {
     { num: cifras?.desaparecidos != null ? `+${cifras.desaparecidos.toLocaleString('es-VE')}` : '+50.000', label: 'Desaparecidos', red: true },
   ]
 
-  // "Más reciente" = la fecha más nueva entre las tres cifras que sí tienen dato.
+  // Cada cifra es el máximo reportado — puede venir de noticias distintas, así
+  // que mostramos la fecha del reporte más antiguo entre las tres (el "peor caso"
+  // de desactualización), no la más nueva, para no dar una falsa sensación de novedad.
   const fechas = [cifras?.muertos_at, cifras?.heridos_at, cifras?.desaparecidos_at].filter(Boolean) as string[]
-  const masReciente = fechas.length ? fechas.sort().at(-1) : null
-  const footer = masReciente
-    ? `Cifras extraídas automáticamente de noticias verificadas · actualizado ${tiempoRelativo(masReciente)}`
+  const masVieja = fechas.length ? fechas.sort()[0] : null
+  const footer = masVieja
+    ? `Cifras máximas extraídas automáticamente de noticias verificadas · reportadas ${tiempoRelativo(masVieja)}`
     : 'Cifras provisionales · 28 jun 2026 · Fuente: medios verificados'
 
   return (

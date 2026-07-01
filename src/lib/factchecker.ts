@@ -46,7 +46,7 @@ Analiza el titular y descripción de la noticia y determina:
    amazonas, anzoategui, apure, aragua, barinas, bolivar, carabobo, cojedes, delta_amacuro, distrito_capital, falcon, guarico, lara, merida, miranda, monagas, nueva_esparta, portuguesa, sucre, tachira, trujillo, vargas, yaracuy, zulia, la_guaira
    Prioriza: yaracuy, carabobo, la_guaira, miranda, distrito_capital, trujillo.
 
-4. Si la noticia menciona explícitamente una cifra ACTUALIZADA de muertos, heridos o desaparecidos atribuida a fuente oficial o confiable (ej. "el gobierno reportó 1.930 muertos", "Protección Civil eleva a 3.500 los heridos"), extrae el número exacto. Si la noticia NO menciona una cifra nueva, o solo repite las cifras generales del contexto sin actualizarlas, deja el campo en null. No inventes ni redondees — usa el número tal como aparece.
+4. Si la noticia menciona explícitamente una cifra ACTUALIZADA de muertos, heridos o desaparecidos a NIVEL PAÍS (el balance nacional total, atribuido a fuente oficial o confiable — ej. "el gobierno reportó 1.930 muertos a nivel nacional", "Protección Civil eleva a 3.500 los heridos en todo el país"), extrae el número exacto. Si la cifra es de un solo estado, municipio o localidad (ej. "el alcalde de Chacao reportó 58 fallecidos"), NO la uses — no representa el total nacional, deja el campo en null. Si la noticia NO menciona una cifra nueva a nivel país, o solo repite las cifras generales del contexto sin actualizarlas, deja el campo en null. No inventes ni redondees — usa el número tal como aparece.
 
 CRITERIOS DE RECHAZO:
 - Noticia de otro país o evento no relacionado
