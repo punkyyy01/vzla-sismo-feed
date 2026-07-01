@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState, useCallback, useRef, useMemo } from 'react'
 import { createPortal } from 'react-dom'
+import NextImage from 'next/image'
 import { createClient } from '@supabase/supabase-js'
 import { AnimatePresence, motion } from 'framer-motion'
 import { MapaVenezuelaSVG } from './MapaVenezuelaSVG'
@@ -97,6 +98,42 @@ function fuenteLabel(tipo: string, fuente: string) {
   if (tipo === 'x_twitter') return `@${fuente.replace(/^@/, '')}`
   if (tipo === 'oficial') return fuente
   return fuente
+}
+
+// Square thumbnail shown at the left of each feed card. Same load lifecycle as
+// the gallery images: skeleton holds the slot until the image decodes, then it
+// fades in. On error the whole thumbnail is removed and the card reflows to
+// text-only (matches how ~17% of news arrive with no imagen_url at all).
+// unoptimized: imagen_url points at arbitrary external hosts (RSS media), so we
+// skip Next's optimizer; referrerPolicy avoids leaking our URL to those hosts.
+function CardThumb({ src, alt }: { src: string; alt: string }) {
+  const [loaded, setLoaded] = useState(false)
+  const [failed, setFailed] = useState(false)
+  const imgRef = useRef<HTMLImageElement>(null)
+
+  useEffect(() => {
+    if (imgRef.current?.complete) setLoaded(true)
+  }, [])
+
+  if (failed) return null
+
+  return (
+    <div className="relative w-20 h-20 shrink-0 overflow-hidden bg-panel dark:bg-panel-dark">
+      {!loaded && <div className="absolute inset-0 skeleton" />}
+      <NextImage
+        ref={imgRef}
+        src={src}
+        alt={alt}
+        fill
+        unoptimized
+        referrerPolicy="no-referrer"
+        sizes="80px"
+        onLoad={() => setLoaded(true)}
+        onError={() => setFailed(true)}
+        className={`object-cover transition-opacity duration-500 ease-out ${loaded ? 'opacity-100' : 'opacity-0'}`}
+      />
+    </div>
+  )
 }
 
 function SearchIcon() {
@@ -696,14 +733,20 @@ export function FeedNoticias({ initialData }: { initialData?: Noticia[] }) {
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
             {[...Array(6)].map((_, i) => (
               <div key={i} className="bg-panel dark:bg-panel-dark border border-rule dark:border-rule-dark border-l-[3px] p-4">
-                <div className="flex items-center justify-between gap-2 mb-3">
-                  <div className="h-2.5 w-16 rounded skeleton" />
-                  <div className="h-2.5 w-24 rounded skeleton" />
+                <div className="flex gap-3">
+                  {/* Thumbnail placeholder — most cards carry an image (~82%). */}
+                  <div className="w-20 h-20 shrink-0 skeleton" />
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center justify-between gap-2 mb-3">
+                      <div className="h-2.5 w-16 rounded skeleton" />
+                      <div className="h-2.5 w-24 rounded skeleton" />
+                    </div>
+                    <div className="h-4 w-full rounded skeleton mb-2" />
+                    <div className="h-4 w-4/5 rounded skeleton mb-3" />
+                    <div className="h-3 w-full rounded skeleton mb-1.5" />
+                    <div className="h-3 w-2/3 rounded skeleton" />
+                  </div>
                 </div>
-                <div className="h-4 w-full rounded skeleton mb-2" />
-                <div className="h-4 w-4/5 rounded skeleton mb-3" />
-                <div className="h-3 w-full rounded skeleton mb-1.5" />
-                <div className="h-3 w-2/3 rounded skeleton" />
               </div>
             ))}
           </div>
@@ -732,38 +775,44 @@ export function FeedNoticias({ initialData }: { initialData?: Noticia[] }) {
                       ${isNuevo(n) ? 'ring-1 ring-inset ring-[#CF1020]/30' : ''}
                     `}
                   >
-                    {/* Primera línea: tag · tsunami · fuente · tiempo */}
-                    <div className="flex items-center justify-between gap-2 mb-2">
-                      <span className={`font-mono text-[10px] uppercase tracking-widest shrink-0 ${meta?.text ?? 'text-ink-muted dark:text-ink-muted-dark'}`}>
-                        {meta?.short ?? n.tag}
-                      </span>
-                      {n.tsunami && (
-                        <span className="font-mono text-[10px] uppercase tracking-widest text-crisis-red flex items-center gap-1" title="Alerta de tsunami">
-                          <TsunamiIcon /> Tsunami
-                        </span>
-                      )}
-                      <span className="font-mono text-[10px] text-ink-muted dark:text-ink-muted-dark tracking-wide tnum truncate text-right ml-auto">
-                        {fuenteLabel(n.fuente_tipo, n.fuente)} · {tiempoRelativo(n.publicado_at)}
-                      </span>
+                    {/* Miniatura (si la noticia trae imagen) + bloque de texto */}
+                    <div className="flex gap-3">
+                      {n.imagen_url && <CardThumb src={n.imagen_url} alt={n.titulo} />}
+                      <div className="min-w-0 flex-1">
+                        {/* Primera línea: tag · tsunami · fuente · tiempo */}
+                        <div className="flex items-center justify-between gap-2 mb-2">
+                          <span className={`font-mono text-[10px] uppercase tracking-widest shrink-0 ${meta?.text ?? 'text-ink-muted dark:text-ink-muted-dark'}`}>
+                            {meta?.short ?? n.tag}
+                          </span>
+                          {n.tsunami && (
+                            <span className="font-mono text-[10px] uppercase tracking-widest text-crisis-red flex items-center gap-1" title="Alerta de tsunami">
+                              <TsunamiIcon /> Tsunami
+                            </span>
+                          )}
+                          <span className="font-mono text-[10px] text-ink-muted dark:text-ink-muted-dark tracking-wide tnum truncate text-right ml-auto">
+                            {fuenteLabel(n.fuente_tipo, n.fuente)} · {tiempoRelativo(n.publicado_at)}
+                          </span>
+                        </div>
+
+                        {/* Título */}
+                        <h2 className="font-serif font-semibold text-[1.05rem] leading-snug text-ink dark:text-ink-dark group-hover:text-[#CF1020] transition-colors mb-2">
+                          {n.titulo}
+                        </h2>
+
+                        {/* Descripción */}
+                        {n.descripcion && (
+                          <p className="text-xs text-ink-muted dark:text-ink-muted-dark line-clamp-2">
+                            {n.descripcion}
+                          </p>
+                        )}
+
+                        {isNuevo(n) && (
+                          <span className="inline-block mt-1.5 font-mono text-[10px] uppercase tracking-widest text-crisis-red">
+                            Nuevo
+                          </span>
+                        )}
+                      </div>
                     </div>
-
-                    {/* Título */}
-                    <h2 className="font-serif font-semibold text-[1.05rem] leading-snug text-ink dark:text-ink-dark group-hover:text-[#CF1020] transition-colors mb-2">
-                      {n.titulo}
-                    </h2>
-
-                    {/* Descripción */}
-                    {n.descripcion && (
-                      <p className="text-xs text-ink-muted dark:text-ink-muted-dark line-clamp-2">
-                        {n.descripcion}
-                      </p>
-                    )}
-
-                    {isNuevo(n) && (
-                      <span className="inline-block mt-1.5 font-mono text-[10px] uppercase tracking-widest text-crisis-red">
-                        Nuevo
-                      </span>
-                    )}
 
                     {/* Feature 1: botones de compartir */}
                     <div className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 mt-3 pt-2 border-t border-rule dark:border-rule-dark">
