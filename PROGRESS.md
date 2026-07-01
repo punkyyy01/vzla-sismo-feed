@@ -323,3 +323,19 @@
 - Next best step:
   - Review the redesign and merge `feat/agent-skills-frontend` into `master`.
   - Optional follow-ups: resolve the font-override warning, migrate the emergency modal cards to the new tokens, and integrate dark-mode map tiles.
+
+### Session 010 — 2026-07-01
+- Date: 2026-07-01
+- Goal: mejorar el UI/UX de la página de donaciones (/donar) usando las directrices de /ui-ux-pro-max y /impeccable, respetando el estilo editorial.
+- Completed:
+  - Inicialización del contexto estratégico visual mediante los artefactos PRODUCT.md y DESIGN.md bajo el registro "brand".
+  - Remoción de side-stripe borders (bordes izquierdos rojos de 3px) en InsumoCard y OrgCard para eliminar malas prácticas ("AI Tells").
+  - Rediseño de la cabecera (Hero) hacia una composición asimétrica editorial de dos columnas con tipografía Newsreader en escala hero.
+  - Implementación de un fallback seguro para la imagen del Hero en caso de error de carga externa.
+  - Solución del hover bug de OrgCard (fondo negro sobre texto negro en modo claro) mediante transiciones basadas en opacidad.
+  - Diferenciación visual de socios locales que no disponen de URL de redirección directa.
+  - Corrección de contrastes WCAG AA (>=4.5:1) en textos secundarios sobre fondo paper.
+- Verification:
+  - Compilación de producción y análisis de tipos pasados de forma exitosa (`npm run build`).
+- Commits:
+  - `6303c33` feat(donar): improve ui-ux and establish design system
