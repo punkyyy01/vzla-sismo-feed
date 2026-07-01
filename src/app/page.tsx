@@ -7,7 +7,7 @@ export default async function Page() {
   let initialData: any[] = []
   try {
     const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
-    const res = await fetch(`${base}/api/feed`)
+    const res = await fetch(`${base}/api/feed?limit=50`)
     if (res.ok) {
       const data = await res.json()
       initialData = data.noticias ?? []

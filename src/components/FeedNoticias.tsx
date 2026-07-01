@@ -57,18 +57,20 @@ const ZONAS: { value: string; label: string }[] = [
 
 // Left border + oval "pill" badge per category — the pill is what renders on
 // each card/list item (bg = 10% tint, fg = darker shade of the same hue so it
-// reads on both light and dark surfaces); border/text are kept for the filter
-// bar's underline-tab styling, which stays plain text there.
-const TAG_META: Record<string, { label: string; border: string; text: string; short: string; pillBg: string; pillFg: string }> = {
-  todos:             { label: 'Todas las categorías', border: 'border-l-[#444]',       text: 'text-ink-muted dark:text-ink-muted-dark', short: 'Todas',    pillBg: 'bg-ink-muted/10',    pillFg: 'text-ink-muted dark:text-ink-muted-dark' },
-  sismo:             { label: 'Sismo',                border: 'border-l-[#CF1020]',    text: 'text-[#CF1020]',                         short: 'Sismo',    pillBg: 'bg-[#CF1020]/10',    pillFg: 'text-[#8A0E15] dark:text-[#F09595]' },
-  rescate:           { label: 'Rescate',              border: 'border-l-[#F97316]',    text: 'text-[#F97316]',                         short: 'Rescate',  pillBg: 'bg-[#F97316]/10',    pillFg: 'text-[#9A3412] dark:text-[#FDBA74]' },
-  desaparecidos:     { label: 'Desaparecidos',        border: 'border-l-[#A855F7]',    text: 'text-[#A855F7]',                         short: 'Desap.',   pillBg: 'bg-[#A855F7]/10',    pillFg: 'text-[#6B21A8] dark:text-[#D8B4FE]' },
-  puntos_acopio:     { label: 'Puntos de acopio',     border: 'border-l-[#22C55E]',    text: 'text-[#22C55E]',                         short: 'Acopio',   pillBg: 'bg-[#22C55E]/10',    pillFg: 'text-[#166534] dark:text-[#86EFAC]' },
-  ayuda_humanitaria: { label: 'Ayuda humanitaria',    border: 'border-l-[#3B82F6]',    text: 'text-[#3B82F6]',                         short: 'Ayuda',    pillBg: 'bg-[#3B82F6]/10',    pillFg: 'text-[#1E40AF] dark:text-[#93C5FD]' },
-  replicas:          { label: 'Réplicas',             border: 'border-l-[#EAB308]',    text: 'text-[#EAB308]',                         short: 'Réplicas', pillBg: 'bg-[#EAB308]/10',    pillFg: 'text-[#854D0E] dark:text-[#FDE047]' },
-  donaciones:        { label: 'Donaciones',           border: 'border-l-[#14B8A6]',    text: 'text-[#14B8A6]',                         short: 'Donar',    pillBg: 'bg-[#14B8A6]/10',    pillFg: 'text-[#115E59] dark:text-[#5EEAD4]' },
-  internacional:     { label: 'Internacional',        border: 'border-l-[#94A3B8]',    text: 'text-[#94A3B8]',                         short: 'Int.',     pillBg: 'bg-[#94A3B8]/10',    pillFg: 'text-[#334155] dark:text-[#CBD5E1]' },
+// reads on both light and dark surfaces). Muted, ink-like hues (not the
+// saturated Tailwind defaults) so the eight categories read as one cohesive
+// editorial palette instead of a rainbow of unrelated "app" colors — sismo
+// keeps the original institutional red, since that one already worked.
+const TAG_META: Record<string, { label: string; border: string; short: string; pillBg: string; pillFg: string }> = {
+  todos:             { label: 'Todas las categorías', border: 'border-l-[#444]',     short: 'Todas',    pillBg: 'bg-ink-muted/10',    pillFg: 'text-ink-muted dark:text-ink-muted-dark' },
+  sismo:             { label: 'Sismo',                border: 'border-l-[#CF1020]',  short: 'Sismo',    pillBg: 'bg-[#CF1020]/10',    pillFg: 'text-[#8A0E15] dark:text-[#F09595]' },
+  rescate:           { label: 'Rescate',              border: 'border-l-[#B5502E]',  short: 'Rescate',  pillBg: 'bg-[#B5502E]/10',    pillFg: 'text-[#7A3720] dark:text-[#E3A98D]' },
+  desaparecidos:     { label: 'Desaparecidos',        border: 'border-l-[#6B3A52]',  short: 'Desap.',   pillBg: 'bg-[#6B3A52]/10',    pillFg: 'text-[#4A2839] dark:text-[#D9A8BE]' },
+  puntos_acopio:     { label: 'Puntos de acopio',     border: 'border-l-[#5C7A4A]',  short: 'Acopio',   pillBg: 'bg-[#5C7A4A]/10',    pillFg: 'text-[#3F5433] dark:text-[#B8CBA8]' },
+  ayuda_humanitaria: { label: 'Ayuda humanitaria',    border: 'border-l-[#3D5A73]',  short: 'Ayuda',    pillBg: 'bg-[#3D5A73]/10',    pillFg: 'text-[#2A3F50] dark:text-[#A9C1D2]' },
+  replicas:          { label: 'Réplicas',             border: 'border-l-[#A67C2E]',  short: 'Réplicas', pillBg: 'bg-[#A67C2E]/10',    pillFg: 'text-[#755720] dark:text-[#E0C48C]' },
+  donaciones:        { label: 'Donaciones',           border: 'border-l-[#3E7C6E]',  short: 'Donar',    pillBg: 'bg-[#3E7C6E]/10',    pillFg: 'text-[#2B564C] dark:text-[#A6D2C5]' },
+  internacional:     { label: 'Internacional',        border: 'border-l-[#8A8378]', short: 'Int.',      pillBg: 'bg-[#8A8378]/10',    pillFg: 'text-[#5F5A52] dark:text-[#D9D4C9]' },
 }
 
 function TagPill({ tag }: { tag: string }) {
@@ -343,7 +345,7 @@ function CuratedSection({
           Ver todas →
         </button>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 lg:items-start">
         <a href={destacada.url} target="_blank" rel="noopener noreferrer" className="lg:col-span-5 group block">
           {destacada.imagen_url && (
             <div className="relative aspect-[4/3] w-full overflow-hidden bg-panel dark:bg-panel-dark mb-3">
@@ -397,13 +399,13 @@ export function FeedNoticias({ initialData }: { initialData?: Noticia[] }) {
   const [statsLabel, setStatsLabel] = useState<string>('')
   const [cifras, setCifras] = useState<CifrasStats | null>(null)
 
-  // Snapshot of the first unfiltered load, used only to build the hero package
-  // and the curated category previews above the main grid. Captured once so
-  // switching tag/zona/idioma filters below doesn't reshuffle the hero — those
-  // two views (curated preview vs. full filterable grid) are intentionally
-  // independent, same underlying data.
+  // Pool used only to build the gallery strip, hero package and curated category
+  // previews above the main grid — independent of the filterable grid's own
+  // tag/zona/idioma/query and its LIMIT, and fetched wider (50, the API's max)
+  // so that after the gallery and hero consume their picks there's still enough
+  // left per category for the curated sections to not run dry.
   const [destacadas, setDestacadas] = useState<Noticia[]>(initialData ?? [])
-  const destacadasCapturadas = useRef(Boolean(initialData?.length))
+  const [destacadasCargando, setDestacadasCargando] = useState(!initialData?.length)
   const filtroRef = useRef<HTMLDivElement>(null)
   const { reduced: motionReducida } = useMotionPref()
 
@@ -512,11 +514,14 @@ export function FeedNoticias({ initialData }: { initialData?: Noticia[] }) {
   useEffect(() => { cargar(tagActivo, query) }, [tagActivo, query, idiomaActivo, zonaActiva, cargar])
 
   useEffect(() => {
-    if (!destacadasCapturadas.current && tagActivo === 'todos' && !query && noticias.length) {
-      setDestacadas(noticias)
-      destacadasCapturadas.current = true
-    }
-  }, [noticias, tagActivo, query])
+    const controller = new AbortController()
+    fetch('/api/feed?limit=50', { signal: controller.signal })
+      .then(r => r.ok ? r.json() : null)
+      .then(data => { if (data?.noticias?.length) setDestacadas(data.noticias) })
+      .catch(() => { /* keep whatever initialData/SSR already gave us */ })
+      .finally(() => setDestacadasCargando(false))
+    return () => controller.abort()
+  }, [])
 
   const verTodas = useCallback((tag: string) => {
     setTagActivo(tag)
@@ -622,7 +627,7 @@ export function FeedNoticias({ initialData }: { initialData?: Noticia[] }) {
     <>
       <GaleriaHero
         noticias={galeria as NoticiaGaleria[]}
-        cargando={!destacadasCapturadas.current && destacadas.length === 0}
+        cargando={destacadasCargando && destacadas.length === 0}
       />
 
       {/* Paquete de portada — nota principal + secundarias, estilo revista.
@@ -631,7 +636,7 @@ export function FeedNoticias({ initialData }: { initialData?: Noticia[] }) {
           la única fuente de datos y de paginación. */}
       {heroPrincipal && (
         <section className="px-4 sm:px-6 py-6 border-b border-rule dark:border-rule-dark">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 lg:items-start">
             <a href={heroPrincipal.url} target="_blank" rel="noopener noreferrer" className="lg:col-span-7 group block">
               {heroPrincipal.imagen_url && (
                 <div className="relative aspect-[16/9] w-full overflow-hidden bg-panel dark:bg-panel-dark mb-4">
@@ -677,7 +682,7 @@ export function FeedNoticias({ initialData }: { initialData?: Noticia[] }) {
         <CuratedSection titulo="Sismo" dotColor="bg-[#CF1020]" items={sismoPreview} onVerTodas={() => verTodas('sismo')} />
       )}
       {rescatePreview.length > 0 && (
-        <CuratedSection titulo="Rescate y ayuda humanitaria" dotColor="bg-[#F97316]" items={rescatePreview} onVerTodas={() => verTodas('rescate')} />
+        <CuratedSection titulo="Rescate y ayuda humanitaria" dotColor="bg-[#B5502E]" items={rescatePreview} onVerTodas={() => verTodas('rescate')} />
       )}
 
       {/* Header compacto — una sola línea */}

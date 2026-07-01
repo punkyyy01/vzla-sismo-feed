@@ -20,13 +20,13 @@ export interface NoticiaGaleria {
 // not the full label/border/pill class set.
 const TAG_HEX: Record<string, string> = {
   sismo: '#CF1020',
-  rescate: '#F97316',
-  desaparecidos: '#A855F7',
-  puntos_acopio: '#22C55E',
-  ayuda_humanitaria: '#3B82F6',
-  replicas: '#EAB308',
-  donaciones: '#14B8A6',
-  internacional: '#94A3B8',
+  rescate: '#B5502E',
+  desaparecidos: '#6B3A52',
+  puntos_acopio: '#5C7A4A',
+  ayuda_humanitaria: '#3D5A73',
+  replicas: '#A67C2E',
+  donaciones: '#3E7C6E',
+  internacional: '#8A8378',
 }
 
 // Purely presentational now — `noticias` is a slice of the same deduped list

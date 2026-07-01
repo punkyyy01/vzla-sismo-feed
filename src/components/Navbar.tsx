@@ -21,14 +21,16 @@ function Seismograph({ className = '' }: { className?: string }) {
   )
 }
 
+// Thinner stroke (1.6 vs the old 2) and no fill — closer to the hairline icon
+// weight of a print/editorial nav (BBC, NYT) than a generic app icon.
 function ThemeIcon({ dark }: { dark: boolean }) {
   return dark ? (
-    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <circle cx="12" cy="12" r="4" />
       <path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" />
     </svg>
   ) : (
-    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
     </svg>
   )
@@ -36,11 +38,11 @@ function ThemeIcon({ dark }: { dark: boolean }) {
 
 function MenuIcon({ open }: { open: boolean }) {
   return open ? (
-    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M18 6 6 18" /><path d="m6 6 12 12" />
     </svg>
   ) : (
-    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M4 6h16" /><path d="M4 12h16" /><path d="M4 18h16" />
     </svg>
   )
@@ -73,10 +75,7 @@ export function Navbar() {
   ]
 
   return (
-    <header className="sticky top-0 z-50 bg-paper/95 dark:bg-paper-dark/95 backdrop-blur supports-[backdrop-filter]:bg-paper/80">
-      {/* Institutional alert rule — the single signature color cue. */}
-      <div className="h-1 bg-crisis-red" />
-
+    <header className="sticky top-0 z-50 bg-paper/85 dark:bg-paper-dark/85 backdrop-blur-md supports-[backdrop-filter]:bg-paper/70 dark:supports-[backdrop-filter]:bg-paper-dark/70">
       <div className="border-b border-rule dark:border-rule-dark">
         <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-10 h-16 flex items-center gap-5 lg:gap-8">
           {/* Nameplate */}
@@ -104,10 +103,10 @@ export function Navbar() {
                 <Link
                   key={l.href}
                   href={l.href}
-                  className={`relative text-eyebrow uppercase py-5 transition-colors ${
+                  className={`relative text-eyebrow uppercase py-5 px-1.5 -mx-1.5 rounded transition-colors ${
                     active
                       ? 'text-ink dark:text-ink-dark'
-                      : 'text-ink-muted dark:text-ink-muted-dark hover:text-ink dark:hover:text-ink-dark'
+                      : 'text-ink-muted dark:text-ink-muted-dark hover:text-ink dark:hover:text-ink-dark hover:bg-crisis-red/5 dark:hover:bg-crisis-red/10'
                   }`}
                   aria-current={active ? 'page' : undefined}
                 >
@@ -138,7 +137,7 @@ export function Navbar() {
             <motion.button
               onClick={toggleDark}
               aria-label={dark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
-              className="p-2 rounded text-ink-muted dark:text-ink-muted-dark hover:text-ink dark:hover:text-ink-dark hover:bg-rule/50 dark:hover:bg-rule-dark/50 transition-colors"
+              className="p-2 rounded text-ink-muted dark:text-ink-muted-dark hover:text-ink dark:hover:text-ink-dark hover:bg-crisis-red/5 dark:hover:bg-crisis-red/10 transition-colors"
               whileTap={{ scale: 0.92 }}
             >
               <ThemeIcon dark={dark} />

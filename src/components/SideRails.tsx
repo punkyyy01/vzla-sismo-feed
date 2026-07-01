@@ -13,13 +13,13 @@ type NoticiaRail = {
 
 const TAG_PILL: Record<string, { label: string; bg: string; fg: string }> = {
   sismo:             { label: 'Sismo',            bg: 'bg-[#CF1020]/10', fg: 'text-[#8A0E15]' },
-  rescate:           { label: 'Rescate',          bg: 'bg-[#F97316]/10', fg: 'text-[#9A3412]' },
-  desaparecidos:     { label: 'Desaparecidos',    bg: 'bg-[#A855F7]/10', fg: 'text-[#6B21A8]' },
-  puntos_acopio:     { label: 'Acopio',           bg: 'bg-[#22C55E]/10', fg: 'text-[#166534]' },
-  ayuda_humanitaria: { label: 'Ayuda',            bg: 'bg-[#3B82F6]/10', fg: 'text-[#1E40AF]' },
-  replicas:          { label: 'Réplicas',         bg: 'bg-[#EAB308]/10', fg: 'text-[#854D0E]' },
-  donaciones:        { label: 'Donar',            bg: 'bg-[#14B8A6]/10', fg: 'text-[#115E59]' },
-  internacional:     { label: 'Int.',             bg: 'bg-[#94A3B8]/10', fg: 'text-[#334155]' },
+  rescate:           { label: 'Rescate',          bg: 'bg-[#B5502E]/10', fg: 'text-[#7A3720]' },
+  desaparecidos:     { label: 'Desaparecidos',    bg: 'bg-[#6B3A52]/10', fg: 'text-[#4A2839]' },
+  puntos_acopio:     { label: 'Acopio',           bg: 'bg-[#5C7A4A]/10', fg: 'text-[#3F5433]' },
+  ayuda_humanitaria: { label: 'Ayuda',            bg: 'bg-[#3D5A73]/10', fg: 'text-[#2A3F50]' },
+  replicas:          { label: 'Réplicas',         bg: 'bg-[#A67C2E]/10', fg: 'text-[#755720]' },
+  donaciones:        { label: 'Donar',            bg: 'bg-[#3E7C6E]/10', fg: 'text-[#2B564C]' },
+  internacional:     { label: 'Int.',             bg: 'bg-[#8A8378]/10', fg: 'text-[#5F5A52]' },
 }
 
 function tiempoRelativo(iso: string) {
