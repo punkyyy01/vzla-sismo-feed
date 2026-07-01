@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 
 const INSUMOS = [
@@ -81,76 +82,102 @@ const ORGANIZACIONES: Organizacion[] = [
   },
 ]
 
-// Iconos de línea, mismo vocabulario que el resto del sitio (14-18px, stroke=currentColor,
-// strokeWidth 2). Se ciclan entre los insumos y también arman el patrón de fondo del hero.
-function IconGrano() {
+// Iconos simples y geométricos (24px, stroke=currentColor, strokeWidth 1.8) — cada uno
+// asignado a propósito por tipo de insumo, no por posición, para que se lean de un vistazo.
+function IconCarton() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 2c3 3 3 6 0 9-3-3-3-6 0-9Z" />
-      <path d="M12 11v11" /><path d="M8 15c1.5-1 2.5-1 4-.5" /><path d="M16 18c-1.5-1-2.5-1-4-.5" />
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M7 4h10l2 4v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V8l2-4Z" />
+      <path d="M7 4l5 3.2 5-3.2" />
     </svg>
   )
 }
 function IconLata() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="5" y="6" width="14" height="14" rx="1" />
-      <ellipse cx="12" cy="6" rx="7" ry="2" />
-      <path d="M9 11h6" />
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="6" y="7" width="12" height="13" rx="1.5" />
+      <ellipse cx="12" cy="7" rx="6" ry="2" />
+      <path d="M6 11h12" />
+    </svg>
+  )
+}
+function IconGrano() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 3v18" />
+      <path d="M12 6c-2 0-3 1-3 2s1 2 3 2" /><path d="M12 6c2 0 3 1 3 2s-1 2-3 2" />
+      <path d="M12 11c-2 0-3 1-3 2s1 2 3 2" /><path d="M12 11c2 0 3 1 3 2s-1 2-3 2" />
     </svg>
   )
 }
 function IconGota() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 2s7 8 7 13a7 7 0 1 1-14 0c0-5 7-13 7-13Z" />
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 3c4 5 6 8.5 6 11.5a6 6 0 0 1-12 0C6 11.5 8 8 12 3Z" />
     </svg>
   )
 }
-function IconPan() {
+function IconGalleta() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M4 12c0-4 3.5-7 8-7s8 3 8 7-3 6-8 6-8-2-8-6Z" />
-      <path d="M8 11c1-1 2-1 4 0" /><path d="M14 11c1-1 1.5-1 2 0" />
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="5" y="5" width="14" height="14" rx="2" />
+      <circle cx="9" cy="9" r="0.9" fill="currentColor" stroke="none" />
+      <circle cx="15" cy="9" r="0.9" fill="currentColor" stroke="none" />
+      <circle cx="9" cy="15" r="0.9" fill="currentColor" stroke="none" />
+      <circle cx="15" cy="15" r="0.9" fill="currentColor" stroke="none" />
+      <circle cx="12" cy="12" r="0.9" fill="currentColor" stroke="none" />
     </svg>
   )
 }
-function IconHuevo() {
+function IconFrasco() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 3C8 8 6 12.5 6 15.5a6 6 0 0 0 12 0C18 12.5 16 8 12 3Z" />
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="7" y="9" width="10" height="11" rx="1.5" />
+      <rect x="8" y="5" width="8" height="4" rx="1" />
     </svg>
   )
 }
-const ICONOS = [IconLata, IconGrano, IconGota, IconPan, IconHuevo]
+function IconCubo() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="6" y="6" width="12" height="12" rx="1.5" />
+      <path d="M6 12h12" /><path d="M12 6v12" />
+    </svg>
+  )
+}
+function IconPasta() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 10c2-3.5 4-3.5 6 0s4 3.5 6 0 4-3.5 6 0" />
+      <path d="M4 16c2-3.5 4-3.5 6 0s4 3.5 6 0 4-3.5 6 0" />
+    </svg>
+  )
+}
+
+// Mapa explícito insumo → ícono (en vez de ciclar por posición, que asignaba íconos
+// que no correspondían al alimento).
+const ICONO_POR_INSUMO: Record<string, () => JSX.Element> = {
+  'Leche en polvo': IconCarton,
+  'Proteínas enlatadas': IconLata,
+  'Granos secos': IconGrano,
+  'Harina de maíz precocida': IconCarton,
+  'Pasta': IconPasta,
+  'Avena en hojuelas': IconGrano,
+  'Galletas saladas': IconGalleta,
+  'Puré de papa deshidratado': IconCarton,
+  'Mantequilla de maní': IconFrasco,
+  'Huevos en polvo deshidratados': IconCarton,
+  'Aceite vegetal': IconGota,
+  'Cubos de caldo': IconCubo,
+  'Sal y azúcar': IconFrasco,
+  'Barras de supervivencia': IconCubo,
+}
 
 function ArrowIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M7 17 17 7" /><path d="M7 7h10v10" />
     </svg>
-  )
-}
-
-// Patrón de fondo del hero: los mismos iconos de comida, dispersos y girados, a baja
-// opacidad — un "food pattern" vectorial en vez de una foto (evita depender de un
-// servicio externo de imágenes y respeta la estética ilustrada del resto del sitio).
-function FoodPatternBG() {
-  const tiles = Array.from({ length: 24 })
-  return (
-    <div className="absolute inset-0 overflow-hidden">
-      <div className="absolute -inset-4 grid grid-cols-6 sm:grid-cols-8 gap-6 opacity-[0.14] text-crisis-red">
-        {tiles.map((_, i) => {
-          const Icon = ICONOS[i % ICONOS.length]
-          const rot = (i * 37) % 45 - 22
-          return (
-            <div key={i} className="w-10 h-10 sm:w-12 sm:h-12" style={{ transform: `rotate(${rot}deg)` }}>
-              <Icon />
-            </div>
-          )
-        })}
-      </div>
-    </div>
   )
 }
 
@@ -199,20 +226,21 @@ function OrgCard({ org, index }: { org: Organizacion; index: number }) {
 }
 
 function InsumoCard({ item, index }: { item: string; index: number }) {
-  const Icon = ICONOS[index % ICONOS.length]
+  const Icon = ICONO_POR_INSUMO[item] ?? IconCarton
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-40px' }}
       transition={{ duration: 0.3, delay: Math.min(index, 10) * 0.04, ease: 'easeOut' }}
-      whileHover={{ y: -3, transition: { duration: 0.15 } }}
+      whileHover={{ y: -4, scale: 1.02, transition: { duration: 0.15 } }}
       whileTap={{ scale: 0.96 }}
       className="group flex flex-col items-start gap-3 bg-panel dark:bg-panel-dark border border-rule dark:border-rule-dark
-                 border-l-[3px] border-l-crisis-red px-4 py-4 hover:bg-crisis-red/[0.06] transition-colors"
+                 border-l-[3px] border-l-crisis-red px-4 py-5 hover:bg-crisis-red/[0.08] hover:border-l-crisis-red
+                 hover:shadow-lg hover:shadow-black/10 transition-colors"
     >
-      <span className="flex items-center justify-center w-9 h-9 rounded-full bg-crisis-red/10 text-crisis-red shrink-0">
-        <span className="w-5 h-5"><Icon /></span>
+      <span className="flex items-center justify-center w-11 h-11 rounded-full bg-crisis-red/10 text-crisis-red shrink-0 group-hover:bg-crisis-red group-hover:text-white transition-colors">
+        <span className="w-6 h-6"><Icon /></span>
       </span>
       <span className="font-serif font-semibold text-ink dark:text-ink-dark leading-snug">{item}</span>
     </motion.div>
@@ -220,12 +248,24 @@ function InsumoCard({ item, index }: { item: string; index: number }) {
 }
 
 export default function DonarPage() {
+  const [imgOk, setImgOk] = useState(true)
+
   return (
     <main className="pb-10 lg:pb-14">
-      {/* Hero con patrón de comida y degradado hacia el fondo de la página */}
-      <div className="relative h-64 sm:h-80 lg:h-96 overflow-hidden">
-        <FoodPatternBG />
-        <div className="absolute inset-0 bg-gradient-to-b from-paper/10 via-paper/80 to-paper dark:from-paper-dark/10 dark:via-paper-dark/85 dark:to-paper-dark" />
+      {/* Hero: foto real de fondo con degradado hacia el fondo de la página. Si la
+          imagen no carga (sin conexión, dominio caído), se oculta sola y queda un
+          fondo sólido — no un ícono de imagen rota. */}
+      <div className="relative h-64 sm:h-80 lg:h-96 overflow-hidden bg-panel dark:bg-panel-dark">
+        {imgOk && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src="https://commons.wikimedia.org/wiki/Special:FilePath/GuLong_canned_food_on_the_shelf.jpg"
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+            onError={() => setImgOk(false)}
+          />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-paper/85 to-paper dark:from-black/40 dark:via-paper-dark/85 dark:to-paper-dark" />
         <div className="relative z-10 h-full max-w-8xl mx-auto px-4 sm:px-6 lg:px-10 flex flex-col justify-end pb-8">
           <motion.p
             initial={{ opacity: 0, y: 10 }}
