@@ -367,3 +367,4 @@
   - `2b2d093` fix(home): move card title below image to resolve muddy hover contrast
   - `dd0b205` fix(theme): optimize tag badge contrast with dot indicators and theme adaptive colors
   - `0f6baa3` feat(home): unify card layouts using editorial seismograph placeholder
+  - `2cb2ca7` fix(home): animate collapse and expand on ResumenEvento with rotate transition
