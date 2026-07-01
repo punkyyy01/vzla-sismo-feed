@@ -132,6 +132,9 @@ export async function GET(req: Request) {
           factcheck_confianza: resultado.confianza,
           publicado_at: pubDate.toISOString(),
           imagen_url,
+          cifra_muertos: resultado.cifra_muertos,
+          cifra_heridos: resultado.cifra_heridos,
+          cifra_desaparecidos: resultado.cifra_desaparecidos,
         })
 
         if (insertError) {

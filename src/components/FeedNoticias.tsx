@@ -67,27 +67,19 @@ const TAG_META: Record<string, { label: string; border: string; text: string; sh
 
 const LIMIT = 30
 
-type CifrasEvento = {
-  magnitud_1: string
-  magnitud_2: string
-  segundos_entre_sismos: number
-  epicentro: string
-  muertos: number
-  heridos: number
-  desaparecidos: number
-  fecha_cifras: string
-  fuente: string
+// Forma de `cifras` en la respuesta de /api/stats: por cada tipo de víctima,
+// la cifra no-nula más reciente entre las noticias aprobadas, con su fecha y fuente.
+type CifrasStats = {
+  muertos: number | null
+  muertos_at: string | null
+  muertos_fuente: string | null
+  heridos: number | null
+  heridos_at: string | null
+  heridos_fuente: string | null
+  desaparecidos: number | null
+  desaparecidos_at: string | null
+  desaparecidos_fuente: string | null
 }
-
-// Usado mientras carga la tabla `cifras_evento` de Supabase, o si la carga falla.
-const RESUMEN_DATOS_FALLBACK = [
-  { num: 'M7.2 + M7.5',        label: 'Doblete sísmico',   red: false },
-  { num: '40 seg',              label: 'Entre sismos',      red: false },
-  { num: 'Yaracuy / Carabobo', label: 'Epicentro',         red: false },
-  { num: '~920',               label: 'Muertos (aprox.)',  red: true  },
-  { num: '~3.360',             label: 'Heridos',           red: true  },
-  { num: '+50.000',            label: 'Desaparecidos',     red: true  },
-]
 
 function tiempoRelativo(iso: string) {
   const date = new Date(iso)
@@ -260,41 +252,27 @@ function EmptyState({ error, degraded }: { error?: boolean; degraded?: boolean }
   )
 }
 
-function ResumenEvento() {
+function ResumenEvento({ cifras }: { cifras: CifrasStats | null }) {
   const [open, setOpen] = useState(true)
-  const [cifras, setCifras] = useState<CifrasEvento | null>(null)
 
-  // Tabla `cifras_evento`: fila única (id=1) editable a mano desde el Table
-  // Editor de Supabase. Mientras carga o si falla, se usa el fallback fijo.
-  useEffect(() => {
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    )
-    supabase
-      .from('cifras_evento')
-      .select('magnitud_1, magnitud_2, segundos_entre_sismos, epicentro, muertos, heridos, desaparecidos, fecha_cifras, fuente')
-      .eq('id', 1)
-      .maybeSingle()
-      .then(
-        ({ data }) => { if (data) setCifras(data as CifrasEvento) },
-        () => { /* usa el fallback */ }
-      )
-  }, [])
+  // Los tres campos de víctimas vienen de /api/stats: la cifra no-nula más
+  // reciente extraída por el fact-checker entre las noticias aprobadas. Magnitud,
+  // segundos y epicentro son hechos fijos del evento (no cambian) y quedan estáticos.
+  const datos = [
+    { num: 'M7.2 + M7.5', label: 'Doblete sísmico', red: false },
+    { num: '40 seg', label: 'Entre sismos', red: false },
+    { num: 'Yaracuy / Carabobo', label: 'Epicentro', red: false },
+    { num: cifras?.muertos != null ? `~${cifras.muertos.toLocaleString('es-VE')}` : '~920', label: 'Muertos (aprox.)', red: true },
+    { num: cifras?.heridos != null ? `~${cifras.heridos.toLocaleString('es-VE')}` : '~3.360', label: 'Heridos', red: true },
+    { num: cifras?.desaparecidos != null ? `+${cifras.desaparecidos.toLocaleString('es-VE')}` : '+50.000', label: 'Desaparecidos', red: true },
+  ]
 
-  const datos = cifras ? [
-    { num: `${cifras.magnitud_1} + ${cifras.magnitud_2}`, label: 'Doblete sísmico', red: false },
-    { num: `${cifras.segundos_entre_sismos} seg`, label: 'Entre sismos', red: false },
-    { num: cifras.epicentro, label: 'Epicentro', red: false },
-    { num: `~${cifras.muertos.toLocaleString('es-VE')}`, label: 'Muertos (aprox.)', red: true },
-    { num: `~${cifras.heridos.toLocaleString('es-VE')}`, label: 'Heridos', red: true },
-    { num: `+${cifras.desaparecidos.toLocaleString('es-VE')}`, label: 'Desaparecidos', red: true },
-  ] : RESUMEN_DATOS_FALLBACK
-
-  const fechaLabel = cifras
-    ? new Date(`${cifras.fecha_cifras}T00:00:00`).toLocaleDateString('es-VE', { day: 'numeric', month: 'short', year: 'numeric' })
-    : '28 jun 2026'
-  const fuenteLabel = cifras?.fuente ?? 'medios verificados'
+  // "Más reciente" = la fecha más nueva entre las tres cifras que sí tienen dato.
+  const fechas = [cifras?.muertos_at, cifras?.heridos_at, cifras?.desaparecidos_at].filter(Boolean) as string[]
+  const masReciente = fechas.length ? fechas.sort().at(-1) : null
+  const footer = masReciente
+    ? `Cifras extraídas automáticamente de noticias verificadas · actualizado ${tiempoRelativo(masReciente)}`
+    : 'Cifras provisionales · 28 jun 2026 · Fuente: medios verificados'
 
   return (
     <div className="bg-panel dark:bg-panel-dark border border-rule dark:border-rule-dark p-4 mb-4">
@@ -315,7 +293,7 @@ function ResumenEvento() {
               </div>
             ))}
             <p className="col-span-2 font-mono text-[10px] text-ink-muted dark:text-ink-muted-dark mt-2">
-              Cifras provisionales · {fechaLabel} · Fuente: {fuenteLabel}
+              {footer}
             </p>
           </div>
           <div className="lg:col-span-4 w-full max-w-[375px] mx-auto">
@@ -348,6 +326,7 @@ export function FeedNoticias({ initialData }: { initialData?: Noticia[] }) {
   const [total, setTotal] = useState<number | null>(null)
   const [nuevasCount, setNuevasCount] = useState(0)
   const [statsLabel, setStatsLabel] = useState<string>('')
+  const [cifras, setCifras] = useState<CifrasStats | null>(null)
 
   // Feature 1: copy feedback per card
   const [copiadoId, setCopiadoId] = useState<string | null>(null)
@@ -390,6 +369,7 @@ export function FeedNoticias({ initialData }: { initialData?: Noticia[] }) {
         const d = await res.json()
         const ultima = d.ultima_at ? tiempoRelativo(d.ultima_at) : '—'
         setStatsLabel(`${d.total_aprobadas} noticias · última ${ultima}`)
+        setCifras(d.cifras ?? null)
       } catch { /* ignore */ }
     }
     load()
@@ -653,7 +633,7 @@ export function FeedNoticias({ initialData }: { initialData?: Noticia[] }) {
       {/* Contenido principal */}
       <div className="px-4 sm:px-6 py-6">
         {/* Feature 2: widget resumen del evento */}
-        <ResumenEvento />
+        <ResumenEvento cifras={cifras} />
 
         {query && total !== null && (
           <p className="font-mono text-[10px] text-ink-muted dark:text-ink-muted-dark tracking-widest uppercase mb-4 tnum">

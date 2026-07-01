@@ -9,6 +9,9 @@ export type FactCheckResult = {
   zona: string | null
   razon: string
   confianza: number
+  cifra_muertos: number | null
+  cifra_heridos: number | null
+  cifra_desaparecidos: number | null
 }
 
 const SYSTEM_PROMPT = `Eres un verificador de noticias especializado en el doble sismo que ocurrió en Venezuela el 24 de junio de 2026.
@@ -43,6 +46,8 @@ Analiza el titular y descripción de la noticia y determina:
    amazonas, anzoategui, apure, aragua, barinas, bolivar, carabobo, cojedes, delta_amacuro, distrito_capital, falcon, guarico, lara, merida, miranda, monagas, nueva_esparta, portuguesa, sucre, tachira, trujillo, vargas, yaracuy, zulia, la_guaira
    Prioriza: yaracuy, carabobo, la_guaira, miranda, distrito_capital, trujillo.
 
+4. Si la noticia menciona explícitamente una cifra ACTUALIZADA de muertos, heridos o desaparecidos atribuida a fuente oficial o confiable (ej. "el gobierno reportó 1.930 muertos", "Protección Civil eleva a 3.500 los heridos"), extrae el número exacto. Si la noticia NO menciona una cifra nueva, o solo repite las cifras generales del contexto sin actualizarlas, deja el campo en null. No inventes ni redondees — usa el número tal como aparece.
+
 CRITERIOS DE RECHAZO:
 - Noticia de otro país o evento no relacionado
 - Cifras de muertos sin fuente oficial o muy alejadas del rango conocido
@@ -58,7 +63,10 @@ Responde SOLO con JSON, sin texto adicional:
   "tag": "sismo" | "rescate" | "desaparecidos" | "puntos_acopio" | "ayuda_humanitaria" | "replicas" | "donaciones" | "internacional" | null,
   "zona": "amazonas" | "anzoategui" | "apure" | "aragua" | "barinas" | "bolivar" | "carabobo" | "cojedes" | "delta_amacuro" | "distrito_capital" | "falcon" | "guarico" | "lara" | "merida" | "miranda" | "monagas" | "nueva_esparta" | "portuguesa" | "sucre" | "tachira" | "trujillo" | "vargas" | "yaracuy" | "zulia" | "la_guaira" | null,
   "razon": "explicación breve en español (máx 100 chars)",
-  "confianza": 0-100
+  "confianza": 0-100,
+  "cifra_muertos": number | null,
+  "cifra_heridos": number | null,
+  "cifra_desaparecidos": number | null
 }`
 
 export async function verificarNoticia(
@@ -103,6 +111,9 @@ DESCRIPCIÓN: ${descripcion?.slice(0, 500) ?? '(sin descripción)'}`,
       zona: parsed.zona ?? null,
       razon: parsed.razon ?? 'Sin razón',
       confianza: parsed.confianza ?? 50,
+      cifra_muertos: typeof parsed.cifra_muertos === 'number' ? parsed.cifra_muertos : null,
+      cifra_heridos: typeof parsed.cifra_heridos === 'number' ? parsed.cifra_heridos : null,
+      cifra_desaparecidos: typeof parsed.cifra_desaparecidos === 'number' ? parsed.cifra_desaparecidos : null,
     }
   } catch (err) {
     console.error('[factchecker] Error:', err)
@@ -113,6 +124,9 @@ DESCRIPCIÓN: ${descripcion?.slice(0, 500) ?? '(sin descripción)'}`,
       zona: null,
       razon: 'Error en verificación automática',
       confianza: 0,
+      cifra_muertos: null,
+      cifra_heridos: null,
+      cifra_desaparecidos: null,
     }
   }
 }
