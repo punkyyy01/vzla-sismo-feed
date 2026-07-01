@@ -362,3 +362,4 @@
   - `daf1f95` feat(stats): improve ui-ux and integrate casualties data
   - `6bc3347` fix(donar): restore full-bleed background image in hero
   - `7ee64b8` feat(home): improve homepage ui-ux and align with design tokens
+  - `2b2d093` fix(home): move card title below image to resolve muddy hover contrast
