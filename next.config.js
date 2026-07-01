@@ -65,13 +65,17 @@ const withPWA = require('next-pwa')({
 // CSP: connect-src cubre Supabase (REST + Realtime wss) y Groq (llamado solo
 // desde el servidor, pero se deja explícito por si se agrega fetch client-side).
 // img-src usa https: amplio porque imagen_url viene de RSS externos arbitrarios.
-// script-src sin 'unsafe-inline': el código no usa <script> inline (next-pwa
-// registra el service worker vía chunk normal, no inyección inline).
+// script-src necesita 'unsafe-inline': el App Router de Next.js hidrata usando
+// <script> inline sin nonce (self.__next_f.push(...) para el payload de RSC/
+// streaming) — sin esto el navegador bloquea esos scripts, React nunca
+// hidrata y la página queda congelada en el fallback de loading.tsx para
+// siempre. Endurecer esto requeriría CSP con nonce vía middleware; se deja
+// unsafe-inline por ahora y se compensa con el resto de las directivas.
 // style-src necesita 'unsafe-inline': framer-motion aplica animaciones via
 // atributo style="" inline en cada render.
 const CSP = [
   "default-src 'self'",
-  "script-src 'self'",
+  "script-src 'self' 'unsafe-inline'",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: https:",
   "font-src 'self' data:",
