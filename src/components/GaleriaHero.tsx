@@ -20,8 +20,8 @@ export interface NoticiaGaleria {
 // not the full label/border/pill class set.
 const TAG_HEX: Record<string, string> = {
   sismo: '#CF1020',
-  rescate: '#B5502E',
-  desaparecidos: '#6B3A52',
+  rescate: '#6B3A52',
+  desaparecidos: '#B5502E',
   puntos_acopio: '#5C7A4A',
   ayuda_humanitaria: '#3D5A73',
   replicas: '#A67C2E',
@@ -71,7 +71,7 @@ export default function GaleriaHero({ noticias, cargando }: { noticias: NoticiaG
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.2 }}
-              className="w-[300px] flex-shrink-0 rounded-lg overflow-hidden bg-panel dark:bg-panel-dark border border-rule dark:border-rule-dark hover:bg-[#1A1A1A] dark:hover:bg-[#1A1A1A] transition-colors"
+              className="w-[300px] flex-shrink-0 rounded-lg overflow-hidden bg-panel dark:bg-panel-dark border border-rule dark:border-rule-dark hover:bg-black/[0.03] dark:hover:bg-[#1A1A1A] transition-colors"
             >
               <GaleriaImagen src={n.imagen_url} alt={n.titulo} tag={n.tag} />
               <div className="p-4">

@@ -6,8 +6,8 @@ type TagInfo = { label: string; hex: string; pillBg: string; pillFg: string; bar
 
 const TAG_META: Record<string, TagInfo> = {
   sismo:             { label: 'Sismo',             hex: '#CF1020', pillBg: 'bg-[#CF1020]/10', pillFg: 'text-[#8A0E15] dark:text-[#F09595]', bar: 'bg-[#CF1020]' },
-  rescate:           { label: 'Rescate',           hex: '#B5502E', pillBg: 'bg-[#B5502E]/10', pillFg: 'text-[#7A3720] dark:text-[#E3A98D]', bar: 'bg-[#B5502E]' },
-  desaparecidos:     { label: 'Desaparecidos',     hex: '#6B3A52', pillBg: 'bg-[#6B3A52]/10', pillFg: 'text-[#4A2839] dark:text-[#D9A8BE]', bar: 'bg-[#6B3A52]' },
+  rescate:           { label: 'Rescate',           hex: '#6B3A52', pillBg: 'bg-[#6B3A52]/10', pillFg: 'text-[#4A2839] dark:text-[#D9A8BE]', bar: 'bg-[#6B3A52]' },
+  desaparecidos:     { label: 'Desaparecidos',     hex: '#B5502E', pillBg: 'bg-[#B5502E]/10', pillFg: 'text-[#7A3720] dark:text-[#E3A98D]', bar: 'bg-[#B5502E]' },
   puntos_acopio:     { label: 'Puntos de acopio',  hex: '#5C7A4A', pillBg: 'bg-[#5C7A4A]/10', pillFg: 'text-[#3F5433] dark:text-[#B8CBA8]', bar: 'bg-[#5C7A4A]' },
   ayuda_humanitaria: { label: 'Ayuda humanitaria', hex: '#3D5A73', pillBg: 'bg-[#3D5A73]/10', pillFg: 'text-[#2A3F50] dark:text-[#A9C1D2]', bar: 'bg-[#3D5A73]' },
   replicas:          { label: 'Réplicas',          hex: '#A67C2E', pillBg: 'bg-[#A67C2E]/10', pillFg: 'text-[#755720] dark:text-[#E0C48C]', bar: 'bg-[#A67C2E]' },

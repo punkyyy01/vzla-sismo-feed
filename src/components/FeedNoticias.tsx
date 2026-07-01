@@ -64,8 +64,8 @@ const ZONAS: { value: string; label: string }[] = [
 const TAG_META: Record<string, { label: string; border: string; short: string; pillBg: string; pillFg: string }> = {
   todos:             { label: 'Todas las categorías', border: 'border-l-[#444]',     short: 'Todas',    pillBg: 'bg-ink-muted/10',    pillFg: 'text-ink-muted dark:text-ink-muted-dark' },
   sismo:             { label: 'Sismo',                border: 'border-l-[#CF1020]',  short: 'Sismo',    pillBg: 'bg-[#CF1020]/10',    pillFg: 'text-[#8A0E15] dark:text-[#F09595]' },
-  rescate:           { label: 'Rescate',              border: 'border-l-[#B5502E]',  short: 'Rescate',  pillBg: 'bg-[#B5502E]/10',    pillFg: 'text-[#7A3720] dark:text-[#E3A98D]' },
-  desaparecidos:     { label: 'Desaparecidos',        border: 'border-l-[#6B3A52]',  short: 'Desap.',   pillBg: 'bg-[#6B3A52]/10',    pillFg: 'text-[#4A2839] dark:text-[#D9A8BE]' },
+  rescate:           { label: 'Rescate',              border: 'border-l-[#6B3A52]',  short: 'Rescate',  pillBg: 'bg-[#6B3A52]/10',    pillFg: 'text-[#4A2839] dark:text-[#D9A8BE]' },
+  desaparecidos:     { label: 'Desaparecidos',        border: 'border-l-[#B5502E]',  short: 'Desap.',   pillBg: 'bg-[#B5502E]/10',    pillFg: 'text-[#7A3720] dark:text-[#E3A98D]' },
   puntos_acopio:     { label: 'Puntos de acopio',     border: 'border-l-[#5C7A4A]',  short: 'Acopio',   pillBg: 'bg-[#5C7A4A]/10',    pillFg: 'text-[#3F5433] dark:text-[#B8CBA8]' },
   ayuda_humanitaria: { label: 'Ayuda humanitaria',    border: 'border-l-[#3D5A73]',  short: 'Ayuda',    pillBg: 'bg-[#3D5A73]/10',    pillFg: 'text-[#2A3F50] dark:text-[#A9C1D2]' },
   replicas:          { label: 'Réplicas',             border: 'border-l-[#A67C2E]',  short: 'Réplicas', pillBg: 'bg-[#A67C2E]/10',    pillFg: 'text-[#755720] dark:text-[#E0C48C]' },
@@ -682,7 +682,7 @@ export function FeedNoticias({ initialData }: { initialData?: Noticia[] }) {
         <CuratedSection titulo="Sismo" dotColor="bg-[#CF1020]" items={sismoPreview} onVerTodas={() => verTodas('sismo')} />
       )}
       {rescatePreview.length > 0 && (
-        <CuratedSection titulo="Rescate y ayuda humanitaria" dotColor="bg-[#B5502E]" items={rescatePreview} onVerTodas={() => verTodas('rescate')} />
+        <CuratedSection titulo="Rescate y ayuda humanitaria" dotColor="bg-[#6B3A52]" items={rescatePreview} onVerTodas={() => verTodas('rescate')} />
       )}
 
       {/* Header compacto — una sola línea */}
@@ -868,7 +868,7 @@ export function FeedNoticias({ initialData }: { initialData?: Noticia[] }) {
                     className={`
                       group block bg-panel dark:bg-panel-dark border border-rule dark:border-rule-dark rounded-none
                       border-l-[3px] ${meta?.border ?? 'border-l-[#444]'}
-                      p-4 hover:bg-[#1A1A1A] transition-colors
+                      p-4 hover:bg-black/[0.03] dark:hover:bg-[#1A1A1A] transition-colors
                       ${isNuevo(n) ? 'ring-1 ring-inset ring-[#CF1020]/30' : ''}
                     `}
                   >

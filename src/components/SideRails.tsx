@@ -13,8 +13,8 @@ type NoticiaRail = {
 
 const TAG_PILL: Record<string, { label: string; bg: string; fg: string }> = {
   sismo:             { label: 'Sismo',            bg: 'bg-[#CF1020]/10', fg: 'text-[#8A0E15]' },
-  rescate:           { label: 'Rescate',          bg: 'bg-[#B5502E]/10', fg: 'text-[#7A3720]' },
-  desaparecidos:     { label: 'Desaparecidos',    bg: 'bg-[#6B3A52]/10', fg: 'text-[#4A2839]' },
+  rescate:           { label: 'Rescate',          bg: 'bg-[#6B3A52]/10', fg: 'text-[#4A2839]' },
+  desaparecidos:     { label: 'Desaparecidos',    bg: 'bg-[#B5502E]/10', fg: 'text-[#7A3720]' },
   puntos_acopio:     { label: 'Acopio',           bg: 'bg-[#5C7A4A]/10', fg: 'text-[#3F5433]' },
   ayuda_humanitaria: { label: 'Ayuda',            bg: 'bg-[#3D5A73]/10', fg: 'text-[#2A3F50]' },
   replicas:          { label: 'Réplicas',         bg: 'bg-[#A67C2E]/10', fg: 'text-[#755720]' },

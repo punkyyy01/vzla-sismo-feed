@@ -211,7 +211,7 @@ function OrgCard({ org }: { org: Organizacion }) {
       target="_blank"
       rel="noopener noreferrer"
       whileTap={{ scale: 0.98 }}
-      className={`${base} hover:bg-[#1A1A1A] active:bg-[#1A1A1A]`}
+      className={`${base} hover:bg-black/[0.03] active:bg-black/[0.05] dark:hover:bg-[#1A1A1A] dark:active:bg-[#1A1A1A]`}
     >
       <span className="absolute top-5 right-4 text-ink-muted dark:text-ink-muted-dark opacity-0 group-hover:opacity-100 group-active:opacity-100 group-hover:text-crisis-red group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all">
         <ArrowIcon />
