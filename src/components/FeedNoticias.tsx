@@ -464,7 +464,18 @@ export function FeedNoticias({ initialData }: { initialData?: Noticia[] }) {
   }, [])
 
   useEffect(() => {
-    setActionsSlot(document.getElementById('navbar-feed-actions'))
+    // Retry finding the portal element to handle SSR/hydration timing safely
+    let attempts = 0
+    const findSlot = () => {
+      const el = document.getElementById('navbar-feed-actions')
+      if (el) {
+        setActionsSlot(el)
+      } else if (attempts < 10) {
+        attempts++
+        setTimeout(findSlot, 100)
+      }
+    }
+    findSlot()
   }, [])
 
   useEffect(() => {

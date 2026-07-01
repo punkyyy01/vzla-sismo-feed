@@ -152,6 +152,11 @@ function PlatformCard({ href, icon, title, description, badgeColor = 'blue' }: {
 
 export function NumerosEmergencia() {
   const [isOpen, setIsOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   // Scroll lock when modal is open
   useEffect(() => {
@@ -179,6 +184,8 @@ export function NumerosEmergencia() {
       window.removeEventListener('keydown', handleKeyDown)
     }
   }, [isOpen])
+
+  if (!mounted) return null
 
   return (
     <>
