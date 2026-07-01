@@ -22,10 +22,22 @@
   :root {
     --skeleton-base: #E2E1DC;
     --skeleton-shine: rgba(255, 255, 255, 0.6);
+    color-scheme: light;
   }
   .dark {
     --skeleton-base: #2A2B31;
     --skeleton-shine: rgba(255, 255, 255, 0.06);
+    color-scheme: dark;
+  }
+
+  /* Ensure dropdown options render with proper background and text color */
+  option {
+    background-color: #FFFFFF;
+    color: #17171A;
+  }
+  .dark option {
+    background-color: #161616;
+    color: #E9E9E6;
   }
 
   /* Editorial display copy uses the news serif. */

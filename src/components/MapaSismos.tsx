@@ -169,7 +169,7 @@ export function MapaSismosView({ sismos, outline, dark }: Props) {
                 className="w-full bg-paper dark:bg-paper-dark border border-rule dark:border-rule-dark text-small px-3 py-2 rounded-sm outline-none focus:ring-1 focus:ring-crisis-red text-ink dark:text-ink-dark appearance-none cursor-pointer"
               >
                 {ZONAS.map((z) => (
-                  <option key={z.value} value={z.value}>
+                  <option key={z.value} value={z.value} className="bg-panel dark:bg-panel-dark text-ink dark:text-ink-dark">
                     {z.label}
                   </option>
                 ))}

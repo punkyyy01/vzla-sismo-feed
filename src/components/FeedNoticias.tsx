@@ -727,7 +727,9 @@ export function FeedNoticias({ initialData }: { initialData?: Noticia[] }) {
               className="font-mono text-[11px] uppercase tracking-widest bg-transparent text-ink dark:text-ink-dark border-b-2 border-rule dark:border-rule-dark pb-0.5 pr-6 focus:border-crisis-red focus:outline-none cursor-pointer"
             >
               {ZONAS.map(z => (
-                <option key={z.value} value={z.value}>{z.label}</option>
+                <option key={z.value} value={z.value} className="bg-panel dark:bg-panel-dark text-ink dark:text-ink-dark">
+                  {z.label}
+                </option>
               ))}
             </select>
           </div>
