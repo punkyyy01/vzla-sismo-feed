@@ -45,9 +45,43 @@ function MenuIcon({ open }: { open: boolean }) {
   )
 }
 
+const ACTION_BUTTON_CLASS =
+  'flex items-center justify-center gap-1.5 px-3 py-1.5 rounded border border-rule dark:border-rule-dark ' +
+  'font-mono text-[9px] uppercase tracking-widest text-ink-muted dark:text-ink-muted-dark ' +
+  'hover:text-ink dark:hover:text-ink-dark hover:bg-rule/50 dark:hover:bg-rule-dark/50 transition-colors whitespace-nowrap'
+
+function BellIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+      <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+    </svg>
+  )
+}
+
+function ExportIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+      <polyline points="16 6 12 2 8 6" />
+      <line x1="12" x2="12" y1="2" y2="15" />
+    </svg>
+  )
+}
+
+function CheckIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
+  )
+}
+
 export function Navbar() {
   const [dark, setDark] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [notifPermiso, setNotifPermiso] = useState<NotificationPermission | 'unsupported'>('default')
+  const [exportado, setExportado] = useState(false)
   const pathname = usePathname()
 
   useEffect(() => {
@@ -56,6 +90,53 @@ export function Navbar() {
     setDark(isDark)
     document.documentElement.classList.toggle('dark', isDark)
   }, [])
+
+  useEffect(() => {
+    if (typeof Notification === 'undefined') {
+      setNotifPermiso('unsupported')
+    } else {
+      setNotifPermiso(Notification.permission)
+    }
+  }, [])
+
+  // Listen to exported status from FeedNoticias.tsx
+  useEffect(() => {
+    const handleExportadoExito = () => {
+      setExportado(true)
+      setTimeout(() => setExportado(false), 2000)
+    }
+    window.addEventListener('action:exportado-exito', handleExportadoExito)
+    return () => {
+      window.removeEventListener('action:exportado-exito', handleExportadoExito)
+    }
+  }, [])
+
+  // Listen to notifications state changes
+  useEffect(() => {
+    const handleAlertsSync = (e: Event) => {
+      const customEvent = e as CustomEvent<NotificationPermission | 'unsupported'>
+      if (customEvent.detail) {
+        setNotifPermiso(customEvent.detail)
+      }
+    }
+    window.addEventListener('action:alertas-cambiadas', handleAlertsSync)
+    return () => {
+      window.removeEventListener('action:alertas-cambiadas', handleAlertsSync)
+    }
+  }, [])
+
+  const handleExportar = () => {
+    window.dispatchEvent(new CustomEvent('action:exportar'))
+  }
+
+  const handleActivarAlertas = () => {
+    if (typeof Notification !== 'undefined') {
+      Notification.requestPermission().then(p => {
+        setNotifPermiso(p)
+        window.dispatchEvent(new CustomEvent('action:alertas-cambiadas', { detail: p }))
+      })
+    }
+  }
 
   const toggleDark = () => {
     const next = !dark
@@ -125,10 +206,28 @@ export function Navbar() {
 
           <div className="flex-1" />
 
-          {/* Portal target: page-level actions (alerts / export) render here on desktop.
-              Populated by FeedNoticias when mounted; stays empty (and invisible) on pages
-              that don't have feed actions, like /mapa and /stats. */}
-          <div id="navbar-feed-actions" className="hidden sm:flex items-center gap-5 shrink-0" />
+          {pathname === '/' ? (
+            <div className="hidden sm:flex items-center gap-2 shrink-0 animate-fade-in">
+              {notifPermiso === 'default' && (
+                <button onClick={handleActivarAlertas} className={ACTION_BUTTON_CLASS}>
+                  <BellIcon />
+                  Activar alertas
+                </button>
+              )}
+              {notifPermiso === 'granted' && (
+                <span className={`${ACTION_BUTTON_CLASS} hover:bg-transparent dark:hover:bg-transparent hover:text-ink-muted dark:hover:text-ink-muted-dark cursor-default`}>
+                  <BellIcon />
+                  Alertas activas
+                </span>
+              )}
+              <button onClick={handleExportar} className={ACTION_BUTTON_CLASS}>
+                {exportado ? <CheckIcon /> : <ExportIcon />}
+                {exportado ? 'Copiado' : 'Exportar'}
+              </button>
+            </div>
+          ) : (
+            <div id="navbar-feed-actions" className="hidden sm:flex items-center gap-5 shrink-0" />
+          )}
 
           <span className="hidden sm:block h-6 w-px bg-rule dark:bg-rule-dark shrink-0" aria-hidden="true" />
 

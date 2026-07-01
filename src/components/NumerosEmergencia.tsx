@@ -189,23 +189,15 @@ export function NumerosEmergencia() {
 
   return (
     <>
-      <AnimatePresence>
         {!isOpen && (
-          <motion.button
-            key="fab-button"
-            initial={{ opacity: 0, scale: 0.9, y: 15 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 15 }}
-            whileHover={{ y: -2, transition: { duration: 0.12 } }}
-            whileTap={{ scale: 0.96 }}
+          <button
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-5 right-5 bg-crisis-red hover:bg-crisis-red-light text-white px-5 py-3 shadow-lift z-[60] flex items-center gap-2.5 text-eyebrow uppercase rounded-sm border border-crisis-red-dark/20"
+            className="fixed bottom-5 right-5 bg-crisis-red hover:bg-crisis-red-light active:scale-95 hover:-translate-y-0.5 text-white px-5 py-3 shadow-lift z-[60] flex items-center gap-2.5 text-eyebrow uppercase rounded-sm border border-crisis-red-dark/20 transition-all duration-150"
           >
             <PhoneIcon />
             <span className="hidden sm:inline">Emergencias</span>
-          </motion.button>
+          </button>
         )}
-      </AnimatePresence>
 
       <AnimatePresence>
         {isOpen && (

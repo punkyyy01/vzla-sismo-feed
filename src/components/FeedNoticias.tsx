@@ -463,20 +463,6 @@ export function FeedNoticias({ initialData }: { initialData?: Noticia[] }) {
     }
   }, [])
 
-  useEffect(() => {
-    // Retry finding the portal element to handle SSR/hydration timing safely
-    let attempts = 0
-    const findSlot = () => {
-      const el = document.getElementById('navbar-feed-actions')
-      if (el) {
-        setActionsSlot(el)
-      } else if (attempts < 10) {
-        attempts++
-        setTimeout(findSlot, 100)
-      }
-    }
-    findSlot()
-  }, [])
 
   useEffect(() => {
     const load = async () => {
@@ -624,6 +610,29 @@ export function FeedNoticias({ initialData }: { initialData?: Noticia[] }) {
     setTimeout(() => setExportado(false), 2000)
   }, [noticias])
 
+  useEffect(() => {
+    const handleExportTrigger = () => {
+      handleExportar()
+      // Dispatch success confirmation back to Navbar
+      window.dispatchEvent(new CustomEvent('action:exportado-exito'))
+    }
+    
+    const handleAlertsSync = (e: Event) => {
+      const customEvent = e as CustomEvent<NotificationPermission | 'unsupported'>
+      if (customEvent.detail) {
+        setNotifPermiso(customEvent.detail)
+      }
+    }
+
+    window.addEventListener('action:exportar', handleExportTrigger)
+    window.addEventListener('action:alertas-cambiadas', handleAlertsSync)
+    
+    return () => {
+      window.removeEventListener('action:exportar', handleExportTrigger)
+      window.removeEventListener('action:alertas-cambiadas', handleAlertsSync)
+    }
+  }, [handleExportar])
+
   const tagList = Object.entries(TAG_META)
 
   return (
@@ -659,15 +668,6 @@ export function FeedNoticias({ initialData }: { initialData?: Noticia[] }) {
         </div>
       </div>
 
-      {actionsSlot && createPortal(
-        <FeedActionButtons
-          notifPermiso={notifPermiso}
-          onActivar={() => Notification.requestPermission().then(p => setNotifPermiso(p))}
-          exportado={exportado}
-          onExportar={handleExportar}
-        />,
-        actionsSlot
-      )}
 
       <HintAcciones />
 
