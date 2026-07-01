@@ -1,20 +1,32 @@
 # Progress Log
 
 ## Current Verified State
-- Repository root: `/home/phylip/Downloads/vzla-sismo-feed`
+- Repository root: `g:/Projects/vzla-sismo-feed`
 - Standard startup path: `./init.sh` (pwd, Node check, `npm ci`, `npx tsc --noEmit`, `npm run build`, PWA artifact check)
-- Standard verification path: `./init.sh` from a clean state. Last run: green.
-- Current branch: `feat/agent-skills-frontend` (rebased onto `upstream/master`, `./init.sh` green, ready for force-push and PR).
+- Standard verification path: `npx tsc --noEmit` and `npm run build`. Last run: green.
+- Current branch: `master`
 - Node: v24.14.1 (local). Engine pin: `>=20.0.0` covers the team baseline.
 - npm: 11.14.1 (local). Team baseline: 11.13.0. Engine pin: `>=11.0.0`.
 - Agent skills installed at project scope (`./.agents/skills/`, gitignored; `skills-lock.json` tracked). See Session 002.
 - Frontend visual refresh applied on `feat/agent-skills-frontend`. See Session 003.
-- Current highest-priority unfinished feature: merge the five approved improvement branches (`feat/dark-map-tiles`, `feat/tsunami-alert`, `feat/map-territory-heatmap`, `feat/filter-by-zone`, `feat/offline-mode`) into `master` after review.
-- Current highest-priority unfinished feature: user-approved map and feature improvements (dark tiles, territory+heatmap, zone filter, offline mode, tsunami alerts).
+- Map UI/UX improvements (interactive legend magnitude filter, state filter, details card, 3D skeleton loading/guide) completed on `master`. See Session 010.
 - Current blocker: none for the verification harness. Local Supabase not provisioned (`.env.local` uses placeholders so dev server boots without a real DB; API routes now return fast degraded-mode empty responses in local dev).
-- Active feature branches (from `master`): `feat/dark-map-tiles`, `feat/tsunami-alert`, `feat/map-territory-heatmap`, `feat/filter-by-zone`, `feat/offline-mode`.
 
 ## Session Log
+
+### Session 010 — 2026-07-01
+- Date: 2026-07-01
+- Goal: improve the UI/UX of the maps page (2D and 3D) using ui-ux-pro-max and impeccable guidelines.
+- Completed:
+  - Custom styled Leaflet popups, containers, and zoom controls in [globals.css](file:///g:/Projects/vzla-sismo-feed/src/app/globals.css) to match the brand typography and colors (clear light/dark themes).
+  - Modified [LeafletMap.tsx](file:///g:/Projects/vzla-sismo-feed/src/components/LeafletMap.tsx) to support centering the camera (flyTo) on selected sismos and emit click events on markers.
+  - Redesigned [MapaSismos.tsx](file:///g:/Projects/vzla-sismo-feed/src/components/MapaSismos.tsx) to render a dashboard layout with a floating sidebar (interactive magnitude range filters, geographic state filters, and sismo details panel).
+  - Enhanced [MapaEdificios3D.tsx](file:///g:/Projects/vzla-sismo-feed/src/components/MapaEdificios3D.tsx) with a loading skeleton/shimmer and a floating panel containing specifications, navigation controls, and censo context.
+  - Modified [MapaSwitcher.tsx](file:///g:/Projects/vzla-sismo-feed/src/components/MapaSwitcher.tsx) to query the `zona` field from Supabase and polished the tab buttons for accessibility and touch targets.
+- Verification:
+  - TypeScript type check (`npx tsc --noEmit`) and production Next.js build (`npm run build`) completed successfully with zero warnings/errors.
+- Commits:
+  - `4253012` feat(mapa): improve UI/UX of sismos and 3D buildings maps
 
 ### Session 009 — 2026-06-30
 - Date: 2026-06-30
@@ -326,16 +338,21 @@
 
 ### Session 010 — 2026-07-01
 - Date: 2026-07-01
-- Goal: mejorar el UI/UX de la página de donaciones (/donar) usando las directrices de /ui-ux-pro-max y /impeccable, respetando el estilo editorial.
+- Goal: mejorar el UI/UX de las páginas de donaciones (/donar) y estadísticas (/stats) usando las directrices de /ui-ux-pro-max y /impeccable, respetando el estilo editorial.
 - Completed:
   - Inicialización del contexto estratégico visual mediante los artefactos PRODUCT.md y DESIGN.md bajo el registro "brand".
-  - Remoción de side-stripe borders (bordes izquierdos rojos de 3px) en InsumoCard y OrgCard para eliminar malas prácticas ("AI Tells").
-  - Rediseño de la cabecera (Hero) hacia una composición asimétrica editorial de dos columnas con tipografía Newsreader en escala hero.
-  - Implementación de un fallback seguro para la imagen del Hero en caso de error de carga externa.
-  - Solución del hover bug de OrgCard (fondo negro sobre texto negro en modo claro) mediante transiciones basadas en opacidad.
-  - Diferenciación visual de socios locales que no disponen de URL de redirección directa.
-  - Corrección de contrastes WCAG AA (>=4.5:1) en textos secundarios sobre fondo paper.
+  - **Página de donaciones**:
+    - Remoción de side-stripe borders (bordes izquierdos rojos de 3px) en InsumoCard y OrgCard para eliminar malas prácticas ("AI Tells").
+    - Rediseño del Hero hacia una composición asimétrica de dos columnas con tipografía Newsreader en escala hero y fallback de carga de imagen.
+    - Solución del hover bug de OrgCard (fondo negro sobre texto negro en modo claro) mediante transiciones basadas en opacidad.
+    - Diferenciación visual de socios locales que no disponen de URL de redirección directa.
+  - **Página de estadísticas**:
+    - Integración y maquetación de la sección oficial de víctimas y daños (fallecidos, heridos, desaparecidos) expuesta por la API de backend, anteriormente oculta.
+    - Rediseño de la cabecera editorial y del panel del boletín (tarjeta asimétrica de reportes verificados).
+    - Unificación de los colores de categorías con `FeedNoticias.tsx` y refinamiento de la tabla de distribución (barras más delgadas de 4px de altura, rectangulares y con hover interactivo).
+  - Corrección de contrastes WCAG AA (>=4.5:1) en textos secundarios sobre fondo paper en ambas páginas.
 - Verification:
-  - Compilación de producción y análisis de tipos pasados de forma exitosa (`npm run build`).
+  - Compilación limpia de producción y análisis de tipos pasados con éxito (`npm run build`).
 - Commits:
   - `6303c33` feat(donar): improve ui-ux and establish design system
+  - `daf1f95` feat(stats): improve ui-ux and integrate casualties data
